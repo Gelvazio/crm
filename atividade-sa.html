@@ -38,6 +38,34 @@
       .aula-guiada__titulo { margin-top: 40px; }
       @media (max-width: 720px) { .indice { columns: 1; } }
       @media print { .documento__topo button { display: none; } }
+      /* Tema claro: sala de aula escura (projetor) lê melhor com fundo claro e texto escuro */
+      :root {
+        --cor-fundo: #f4f7fc;
+        --cor-superficie: #ffffff;
+        --cor-texto: #111827;
+        --cor-texto-suave: #1f2937;
+        --cor-ciano: #0a4f8f;
+        --cor-magenta: #a3127f;
+        --cor-violeta: #4f2bd0;
+        --cor-borda: #9db4d3;
+        --brilho-ciano: 0 1px 4px rgba(15, 40, 80, 0.15);
+        --brilho-magenta: 0 1px 4px rgba(15, 40, 80, 0.15);
+      }
+      body { background: #e9eff8; color: var(--cor-texto); }
+      .grade { display: none; }
+      .documento { font-family: "Segoe UI", system-ui, sans-serif; font-size: 1.15rem; line-height: 1.55; }
+      .documento h1, .documento h2, .passo h2 { text-shadow: none; }
+      .documento h1 { font-size: 1.6rem; }
+      .documento th { background: #e6eefb; }
+      .documento code { font-family: Consolas, "Courier New", monospace; color: #0a3f73; background: #eaf1fb; padding: 0 4px; border-radius: 4px; }
+      .documento pre { background: #f1f5fb; border-color: #9db4d3; font-size: 1rem; }
+      .documento pre code { background: transparent; padding: 0; color: #0b2f55; }
+      .documento a { color: #0a4f8f; font-weight: 600; }
+      .exercicio-box { background: #f8fafe; }
+      .passo__n { color: #ffffff; background: #a3127f; }
+      .dica { background: #fdf2fb; color: #1f2937; }
+      .botao { color: #ffffff; background: #0a4f8f; border-color: #0a4f8f; }
+      .botao--secundario { color: #0a4f8f; background: #ffffff; }
     </style>
   </head>
   <body>

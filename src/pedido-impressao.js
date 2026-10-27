@@ -3,7 +3,7 @@
 const CASAS_DECIMAIS = 2;
 const NOME_EMPRESA = 'CRM Núcleo de Vendas';
 const CLASSE_MODAL = 'modal-pedido';
-const COLUNAS_IMPRESSAO = ['Descrição', 'Qtd', 'Valor Unit.', 'Total'];
+const COLUNAS_IMPRESSAO = ['Descrição', 'Qtd', 'Valor Unit.', 'Desconto', 'Total'];
 const FORMATO_DATA = 'pt-BR';
 
 /**
@@ -57,9 +57,11 @@ function criarTabelaItens(itens) {
   });
   const corpo = tabela.createTBody();
   itens.forEach((item) => {
+    const vendido = item.precoVendido ?? item.preco;
+    const desconto = (item.preco - vendido) * item.quantidade;
     const valores = [
       item.nome, String(item.quantidade), formatarMoeda(item.preco),
-      formatarMoeda(item.preco * item.quantidade),
+      formatarMoeda(desconto), formatarMoeda(vendido * item.quantidade),
     ];
     const linha = corpo.insertRow();
     valores.forEach((valor) => {
@@ -89,6 +91,7 @@ export function criarDocumentoPedido({ pedido, cliente }, agora = new Date()) {
     criarElemento('h3', 'modal-pedido__subtitulo', 'Itens do Pedido'),
     criarTabelaItens(pedido.itens),
     criarElemento('p', 'modal-pedido__total', `Acréscimo: ${formatarMoeda(acrescimo)}`),
+    criarElemento('p', 'modal-pedido__total', `Desconto: ${formatarMoeda(pedido.desconto ?? 0)}`),
     criarElemento('p', 'modal-pedido__total', `Total: ${formatarMoeda(pedido.total)}`),
   );
   return documento;

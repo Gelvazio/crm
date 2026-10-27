@@ -306,16 +306,16 @@ select:focus-visible {
   margin-top: var(--espaco);
 }
 
-/* Modal da atividade de SA (página atividade-sa.html dentro de um iframe) */
+/* Modal da atividade de SA (página atividade-sa.html dentro de um iframe), em tema claro */
 .modal-atividade {
   width: min(1040px, 96vw);
   height: 92vh;
   padding: var(--espaco);
-  color: var(--cor-texto);
-  background: var(--cor-fundo);
-  border: 1px solid var(--cor-ciano);
+  color: #111827;
+  background: #f4f7fc;
+  border: 2px solid #0a4f8f;
   border-radius: var(--raio);
-  box-shadow: var(--brilho-ciano);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
 }
 
 .modal-atividade[open] {
@@ -325,8 +325,7 @@ select:focus-visible {
 }
 
 .modal-atividade::backdrop {
-  background: rgba(5, 3, 13, 0.8);
-  backdrop-filter: blur(3px);
+  background: rgba(5, 3, 13, 0.75);
 }
 
 .modal-atividade__cabecalho {
@@ -341,15 +340,22 @@ select:focus-visible {
   margin: 0;
   font-family: var(--fonte-titulo);
   font-size: 1.1rem;
-  color: var(--cor-ciano);
+  color: #0a4f8f;
+}
+
+.modal-atividade .botao {
+  color: #ffffff;
+  background: #0a4f8f;
+  border-color: #0a4f8f;
+  box-shadow: none;
 }
 
 .modal-atividade__quadro {
   flex: 1;
   width: 100%;
-  border: 1px solid var(--cor-borda);
+  border: 1px solid #9db4d3;
   border-radius: var(--raio);
-  background: var(--cor-fundo);
+  background: #e9eff8;
 }
 
 /* Tela de pedido: painel azul-marinho com campos em linha */
@@ -496,6 +502,7 @@ select:focus-visible {
 
 .cartao--pedido .pedido__linha--produto input[name="quantidade"],
 .cartao--pedido .pedido__linha--produto input[name="unitario"],
+.cartao--pedido .pedido__linha--produto input[name="precoVendido"],
 .cartao--pedido .pedido__linha--produto input[name="totalItem"] {
   width: 90px;
 }

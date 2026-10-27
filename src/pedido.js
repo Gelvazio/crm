@@ -10,6 +10,7 @@ const CASAS_DECIMAIS = 2;
 const MSG_CLIENTE_NAO_ENCONTRADO = 'Cliente não encontrado';
 const MSG_PEDIDO_SEM_ITENS = 'Pedido sem itens';
 const MSG_QUANTIDADE_INVALIDA = 'Quantidade inválida';
+const MSG_PRECO_VENDIDO_INVALIDO = 'Preço vendido inválido (negativo ou maior que o preço do produto)';
 const MSG_PRODUTO_NAO_ENCONTRADO = 'Produto não encontrado';
 export const STATUS_ABERTO = 'aberto';
 export const STATUS_CONCLUIDO = 'concluido';
@@ -20,23 +21,51 @@ const CLASSE_MENSAGEM = '.mensagem';
 const CLASSE_LISTA = '.lista-pedidos';
 
 /**
- * Soma preço x quantidade de cada item, arredondando em 2 casas.
- * @param {{preco: number, quantidade: number}[]} itens - Itens do pedido.
+ * @param {{preco: number, precoVendido?: number}} item - Item do pedido.
+ * @returns {number} Preço em que o item foi vendido (o preço real, se não houve desconto).
+ */
+export function obterPrecoVendido(item) {
+  return item.precoVendido ?? item.preco;
+}
+
+/**
+ * Desconto de um item: (preço real - preço vendido) x quantidade.
+ * @param {{preco: number, precoVendido?: number, quantidade: number}} item - Item do pedido.
+ * @returns {number} Desconto do item, em 2 casas.
+ */
+export function calcularDescontoItem(item) {
+  const desconto = (item.preco - obterPrecoVendido(item)) * item.quantidade;
+  return Number(desconto.toFixed(CASAS_DECIMAIS));
+}
+
+/**
+ * Soma o desconto de todos os itens.
+ * @param {object[]} itens - Itens do pedido.
+ * @returns {number} Desconto total do pedido.
+ */
+export function calcularDesconto(itens) {
+  const total = itens.reduce((soma, item) => soma + calcularDescontoItem(item), 0);
+  return Number(total.toFixed(CASAS_DECIMAIS));
+}
+
+/**
+ * Soma preço vendido x quantidade de cada item, arredondando em 2 casas.
+ * @param {{preco: number, precoVendido?: number, quantidade: number}[]} itens - Itens do pedido.
  * @returns {number} Total do pedido.
  */
 export function calcularTotal(itens) {
-  const total = itens.reduce((soma, item) => soma + item.preco * item.quantidade, 0);
+  const total = itens.reduce((soma, item) => soma + obterPrecoVendido(item) * item.quantidade, 0);
   return Number(total.toFixed(CASAS_DECIMAIS));
 }
 
 /**
  * Confere um item pedido: quantidade, produto e estoque.
  * @param {object} api - API injetada.
- * @param {{produtoId: number, quantidade: number}} pedido - Item pedido.
+ * @param {{produtoId: number, quantidade: number, precoVendido?: number}} pedido - Item pedido.
  * @returns {Promise<{produto: object, item: object}>} Produto atual e item com preço.
- * (Recusa se quantidade, produto ou estoque forem inválidos.)
+ * (Recusa se quantidade, produto, estoque ou preço vendido forem inválidos.)
  */
-function conferirItem(api, { produtoId, quantidade }) {
+function conferirItem(api, { produtoId, quantidade, precoVendido }) {
   const quantidadeValida = Number.isInteger(quantidade) && quantidade > 0;
   if (!quantidadeValida) return Promise.reject(new Error(MSG_QUANTIDADE_INVALIDA));
 
@@ -45,7 +74,11 @@ function conferirItem(api, { produtoId, quantidade }) {
     if (!temEstoque(produto, quantidade)) {
       return Promise.reject(new Error(`Sem estoque de ${produto.nome}`));
     }
+    const precoValido = precoVendido === undefined
+      || (precoVendido >= 0 && precoVendido <= produto.preco);
+    if (!precoValido) return Promise.reject(new Error(MSG_PRECO_VENDIDO_INVALIDO));
     const item = { produtoId, nome: produto.nome, preco: produto.preco, quantidade };
+    if (precoVendido !== undefined) item.precoVendido = precoVendido;
     return { produto, item };
   });
 }
@@ -104,7 +137,7 @@ function conferirPedido(api, dados) {
 function montarCamposPedido(dados, itens) {
   const acrescimo = dados.acrescimo ?? 0;
   const pagamento = dados.condicaoPagamento
-    ? { condicaoPagamento: dados.condicaoPagamento, acrescimo }
+    ? { condicaoPagamento: dados.condicaoPagamento, acrescimo, desconto: calcularDesconto(itens) }
     : {};
   const total = Number((calcularTotal(itens) + acrescimo).toFixed(CASAS_DECIMAIS));
   return { clienteId: dados.clienteId, itens, total, ...pagamento };
@@ -225,7 +258,7 @@ export function listarPedidos(api) {
 
 
 const CONDICOES_PADRAO = [{ id: 1, nome: 'A Vista' }];
-const COLUNAS_ITENS = ['Código', 'Descrição', 'Qtde', 'Unit.', 'Total', 'Ações'];
+const COLUNAS_ITENS = ['Código', 'Descrição', 'Qtde', 'Unit.', 'Vendido', 'Desconto', 'Total', 'Ações'];
 const MODELO_TELA = `<h2>Pedidos</h2>
   <form class="pedido">
     <div class="pedido__linha">
@@ -233,6 +266,8 @@ const MODELO_TELA = `<h2>Pedidos</h2>
       <label class="pedido__campo">Cond.Pagt: <select name="condicaoPagamento"></select></label>
       <label class="pedido__campo">Acréscimo:
         <input name="acrescimo" type="text" inputmode="decimal" value="0,00"></label>
+      <label class="pedido__campo">Desconto:
+        <input name="desconto" readonly value="0,00"></label>
       <label class="pedido__campo">Total Venda:
         <input name="totalVenda" readonly value="0,00"></label>
     </div>
@@ -244,6 +279,8 @@ const MODELO_TELA = `<h2>Pedidos</h2>
       <label class="pedido__campo">Qtde:
         <input name="quantidade" type="number" min="1" value="1"></label>
       <label class="pedido__campo">Unit.: <input name="unitario" readonly></label>
+      <label class="pedido__campo">Vendido:
+        <input name="precoVendido" type="text" inputmode="decimal"></label>
       <label class="pedido__campo">Total: <input name="totalItem" readonly></label>
       <button class="pedido__adicionar" type="button">Adicionar</button>
     </div>
@@ -317,9 +354,11 @@ function criarLinhasPedidos(pedidos) {
  * @returns {HTMLTableRowElement} Linha da tabela.
  */
 function criarLinhaItem(item, aoRemover) {
+  const vendido = obterPrecoVendido(item);
   const valores = [
-    item.produtoId, item.nome, item.quantidade,
-    formatarValor(item.preco), formatarValor(item.preco * item.quantidade),
+    item.produtoId, item.nome, item.quantidade, formatarValor(item.preco),
+    formatarValor(vendido), formatarValor(calcularDescontoItem(item)),
+    formatarValor(vendido * item.quantidade),
   ];
   const celulas = valores.map((valor) =>
     Object.assign(document.createElement('td'), { textContent: String(valor) })
@@ -348,17 +387,23 @@ function criarControleVenda(formulario, secao) {
   const carrinho = [];
   const estado = { produtos: [] };
 
-  /** @returns {object|undefined} Produto escolhido (atualiza descrição, unitário e total). */
+  /** @returns {object|undefined} Produto escolhido (atualiza descrição, preços e total). */
   function atualizarProduto() {
     const produto = estado.produtos.find((atual) => atual.id === Number(campos.produtoId.value));
-    const total = produto ? produto.preco * lerNumero(campos.quantidade.value) : 0;
+    const trocouProduto = produto && campos.precoVendido.dataset.produto !== String(produto.id);
+    if (trocouProduto) {
+      campos.precoVendido.value = formatarValor(produto.preco);
+      campos.precoVendido.dataset.produto = String(produto.id);
+    }
+    const vendido = lerNumero(campos.precoVendido.value);
+    const total = produto ? vendido * lerNumero(campos.quantidade.value) : 0;
     campos.descricao.value = produto ? produto.nome : '';
     campos.unitario.value = produto ? formatarValor(produto.preco) : '';
     campos.totalItem.value = produto ? formatarValor(total) : '';
     return produto;
   }
 
-  /** Redesenha a tabela de itens e o Total Venda (itens + acréscimo). */
+  /** Redesenha a tabela de itens, o Desconto (calculado) e o Total Venda (vendido + acréscimo). */
   function atualizarCarrinho() {
     const remover = (item) => {
       carrinho.splice(carrinho.indexOf(item), 1);
@@ -366,6 +411,7 @@ function criarControleVenda(formulario, secao) {
     };
     corpoItens.replaceChildren(...carrinho.map((item) => criarLinhaItem(item, remover)));
     const total = calcularTotal(carrinho) + lerNumero(campos.acrescimo.value);
+    campos.desconto.value = formatarValor(calcularDesconto(carrinho));
     campos.totalVenda.value = formatarValor(total);
   }
 
@@ -377,9 +423,21 @@ function criarControleVenda(formulario, secao) {
     if (!Number.isInteger(quantidade) || quantidade <= 0) {
       throw new Error(MSG_QUANTIDADE_INVALIDA);
     }
-    const existente = carrinho.find((item) => item.produtoId === produto.id);
+    const precoVendido = lerNumero(campos.precoVendido.value);
+    if (precoVendido < 0 || precoVendido > produto.preco) {
+      throw new Error(MSG_PRECO_VENDIDO_INVALIDO);
+    }
+    const existente = carrinho.find(
+      (item) => item.produtoId === produto.id && obterPrecoVendido(item) === precoVendido,
+    );
     if (existente) existente.quantidade += quantidade;
-    else carrinho.push({ produtoId: produto.id, nome: produto.nome, preco: produto.preco, quantidade });
+    else {
+      carrinho.push({
+        produtoId: produto.id, nome: produto.nome, preco: produto.preco, precoVendido, quantidade,
+      });
+    }
+    campos.precoVendido.dataset.produto = '';
+    atualizarProduto();
     atualizarCarrinho();
   }
 
@@ -394,6 +452,7 @@ function criarControleVenda(formulario, secao) {
     carrinho.length = 0;
     campos.acrescimo.value = '0,00';
     campos.quantidade.value = '1';
+    campos.precoVendido.dataset.produto = '';
     mensagem.textContent = '';
     atualizarCarrinho();
     atualizarProduto();
@@ -403,9 +462,12 @@ function criarControleVenda(formulario, secao) {
   function obterItensDoPedido() {
     const linhaAtual = {
       produtoId: Number(campos.produtoId.value), quantidade: Number(campos.quantidade.value),
+      precoVendido: lerNumero(campos.precoVendido.value),
     };
     const itens = carrinho.length > 0 ? carrinho : [linhaAtual];
-    return itens.map(({ produtoId, quantidade }) => ({ produtoId, quantidade }));
+    return itens.map((item) => ({
+      produtoId: item.produtoId, quantidade: item.quantidade, precoVendido: obterPrecoVendido(item),
+    }));
   }
 
   return {
@@ -495,6 +557,7 @@ export function criarTelaPedido(api, { abrirModal = abrirModalPedido, pedido, ao
 
   campos.produtoId.addEventListener('change', venda.atualizarProduto);
   campos.quantidade.addEventListener('input', venda.atualizarProduto);
+  campos.precoVendido.addEventListener('input', venda.atualizarProduto);
   campos.acrescimo.addEventListener('input', venda.atualizarCarrinho);
   secao.querySelector('.pedido__adicionar').addEventListener('click', aoAdicionar);
   secao.querySelector('.pedido__busca').addEventListener('click', () => campos.produtoId.focus());
