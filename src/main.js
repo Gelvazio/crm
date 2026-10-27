@@ -2,6 +2,7 @@
 
 import './estilo.css';
 import { criarApi } from './api.js';
+import { abrirModalAtividade, criarModalAtividade } from './atividade-modal.js';
 import { criarTelaCliente } from './cliente.js';
 import { criarTelaCondicao } from './condicao-pagamento.js';
 import { abrirModalConfig, criarModalConfig, lerUrlBanco } from './config.js';
@@ -13,10 +14,12 @@ import { criarRepositorioUsuarios, criarTelaUsuario } from './usuario.js';
 
 const ID_SAIR = 'sair';
 const ID_CONFIG = 'config';
+const ID_ATIVIDADE = 'atividade';
 const ID_TELA_INICIAL = ITENS_MENU[0].id;
 
 const api = criarApi({ obterUrlBase: () => lerUrlBanco() });
 const modalConfig = criarModalConfig();
+const modalAtividade = criarModalAtividade();
 const raiz = document.querySelector('#app');
 const menuArea = document.querySelector('#menu');
 const tela = document.querySelector('#tela');
@@ -44,6 +47,10 @@ function mostrarSistema() {
       marcarAtivo(menu, telaAtual);
       return abrirModalConfig(modalConfig);
     }
+    if (id === ID_ATIVIDADE) {
+      marcarAtivo(menu, telaAtual);
+      return abrirModalAtividade(modalAtividade);
+    }
     telaAtual = id;
     tela.replaceChildren(TELAS[id]());
   });
@@ -52,6 +59,6 @@ function mostrarSistema() {
   marcarAtivo(menu, ID_TELA_INICIAL);
 }
 
-document.body.append(modalConfig);
+document.body.append(modalConfig, modalAtividade);
 raiz.hidden = false;
 mostrarLogin();

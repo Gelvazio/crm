@@ -6,6 +6,7 @@ export const ITENS_MENU = [
   { id: 'pedidos', rotulo: 'Pedidos' },
   { id: 'condicoes', rotulo: 'Cond. Pagto' },
   { id: 'usuarios', rotulo: 'Usuários' },
+  { id: 'atividade', rotulo: 'Atividade' },
   { id: 'config', rotulo: 'Config' },
   { id: 'sair', rotulo: 'Sair' },
 ];
