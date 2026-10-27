@@ -1,0 +1,106 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "login": "aluno",
+      "senha": "aluno",
+      "status": 1
+    },
+    {
+      "id": 2,
+      "login": "inativo",
+      "senha": "123",
+      "status": 0
+    }
+  ],
+  "clientes": [
+    {
+      "nome": "JOAO",
+      "idade": 15,
+      "cidade": "RIO DO SUL",
+      "salario": 5800,
+      "id": 1
+    },
+    {
+      "nome": "MARIA",
+      "idade": 15,
+      "cidade": "RIO DO SUL",
+      "salario": 8900,
+      "id": 2
+    }
+  ],
+  "produtos": [
+    {
+      "nome": "arroz",
+      "preco": 5,
+      "estoque": 21,
+      "id": 1
+    },
+    {
+      "nome": "feijao",
+      "preco": 5,
+      "estoque": 147,
+      "id": 2
+    },
+    {
+      "nome": "CARNE DE FRANGO",
+      "preco": 3,
+      "estoque": 835,
+      "id": 3
+    },
+    {
+      "nome": "SAL",
+      "preco": 5,
+      "estoque": 781,
+      "id": 4
+    },
+    {
+      "nome": "PIMENTA",
+      "preco": 45,
+      "estoque": 7842,
+      "id": 5
+    },
+    {
+      "nome": "LEITE",
+      "preco": 5,
+      "estoque": 543,
+      "id": 6
+    }
+  ],
+  "condicoes": [
+    {
+      "id": 1,
+      "nome": "A Vista",
+      "parcelas": 1
+    },
+    {
+      "id": 2,
+      "nome": "A Prazo",
+      "parcelas": 2
+    }
+  ],
+  "pedidos": [
+    {
+      "clienteId": 1,
+      "itens": [
+        {
+          "produtoId": 1,
+          "nome": "arroz",
+          "preco": 5,
+          "quantidade": 1
+        },
+        {
+          "produtoId": 3,
+          "nome": "CARNE DE FRANGO",
+          "preco": 3,
+          "quantidade": 1
+        }
+      ],
+      "total": 8,
+      "data": "2026-10-27T10:59:54.635Z",
+      "condicaoPagamento": "A Vista",
+      "acrescimo": 0,
+      "id": 1
+    }
+  ]
+}

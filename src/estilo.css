@@ -1,0 +1,602 @@
+/* Visual futurista (cyberpunk): prompt VISUAL-FUTURISTA.md do rules-ai. */
+:root {
+  --cor-fundo: #05030d;
+  --cor-superficie: rgba(20, 12, 44, 0.65);
+  --cor-texto: #e8ecff;
+  --cor-texto-suave: #9aa3d6;
+  --cor-ciano: #00f0ff;
+  --cor-magenta: #ff2bd6;
+  --cor-violeta: #7a3cff;
+  --cor-borda: rgba(0, 240, 255, 0.35);
+  --brilho-ciano: 0 0 14px rgba(0, 240, 255, 0.45);
+  --brilho-magenta: 0 0 14px rgba(255, 43, 214, 0.5);
+  --raio: 10px;
+  --espaco: 16px;
+  --fonte-titulo: "Orbitron", "Segoe UI", sans-serif;
+  --fonte-dados: "Share Tech Mono", Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--fonte-dados);
+  color: var(--cor-texto);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(122, 60, 255, 0.35), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(255, 43, 214, 0.25), transparent 45%),
+    var(--cor-fundo);
+}
+
+.grade {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espaco) calc(var(--espaco) * 1.5);
+  border-bottom: 1px solid var(--cor-borda);
+  background: var(--cor-superficie);
+  backdrop-filter: blur(8px);
+}
+
+.cabecalho__titulo {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-size: 1.4rem;
+  color: var(--cor-ciano);
+  text-shadow: var(--brilho-ciano);
+}
+
+.cabecalho__titulo span {
+  font-size: 0.8rem;
+  color: var(--cor-magenta);
+}
+
+/* Barra de telemetria: varredura animada */
+.telemetria {
+  flex: 1;
+  min-width: 80px;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: rgba(0, 240, 255, 0.15);
+}
+
+.telemetria::after {
+  content: "";
+  display: block;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cor-violeta), var(--cor-ciano), var(--cor-magenta));
+  box-shadow: var(--brilho-ciano);
+  animation: varredura 2.4s linear infinite;
+}
+
+@keyframes varredura {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.conteudo {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: calc(var(--espaco) * 1.5) var(--espaco);
+}
+
+.cartao {
+  padding: calc(var(--espaco) * 1.25);
+  margin-bottom: var(--espaco);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  box-shadow: var(--brilho-ciano);
+  backdrop-filter: blur(10px);
+}
+
+.cartao--login {
+  max-width: 420px;
+  margin: 8vh auto 0;
+}
+
+.cartao h2 {
+  margin-top: 0;
+  font-family: var(--fonte-titulo);
+  font-size: 1.1rem;
+  color: var(--cor-ciano);
+}
+
+.formulario {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco);
+  align-items: flex-end;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+}
+
+input,
+select {
+  padding: 8px 10px;
+  font: inherit;
+  color: var(--cor-texto);
+  background: rgba(5, 3, 13, 0.8);
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+}
+
+.botao {
+  padding: 8px 16px;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #05030d;
+  background: var(--cor-ciano);
+  border: 1px solid var(--cor-ciano);
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: var(--brilho-ciano);
+}
+
+.botao--secundario {
+  color: var(--cor-ciano);
+  background: transparent;
+}
+
+.botao--secundario[aria-current="page"] {
+  color: #05030d;
+  background: var(--cor-magenta);
+  border-color: var(--cor-magenta);
+  box-shadow: var(--brilho-magenta);
+}
+
+.botao:hover {
+  filter: brightness(1.2);
+}
+
+.botao:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--cor-magenta);
+  outline-offset: 2px;
+}
+
+.mensagem {
+  min-height: 1.4em;
+  color: var(--cor-magenta);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela th,
+.tabela td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+}
+
+.tabela thead td {
+  color: var(--cor-ciano);
+  font-family: var(--fonte-titulo);
+  font-size: 0.75rem;
+}
+
+.lista-pedidos {
+  padding-left: 18px;
+  color: var(--cor-texto-suave);
+}
+
+@media (max-width: 720px) {
+  .formulario {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tabela {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .telemetria::after {
+    animation: none;
+  }
+}
+
+/* Tela de login: usuário, senha e botão empilhados e centralizados */
+.formulario--centralizado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaco);
+}
+
+.formulario--centralizado .campo {
+  width: 100%;
+  max-width: 280px;
+  text-align: center;
+  color: var(--cor-ciano);
+}
+
+.formulario--centralizado .campo input {
+  width: 100%;
+  margin-top: 6px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.formulario--centralizado .botao {
+  align-self: center;
+}
+
+.cartao--login h2,
+.cartao--login .mensagem {
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .formulario--centralizado {
+    align-items: center;
+  }
+}
+
+/* Modal de configurações */
+.modal-config {
+  width: min(480px, 92vw);
+  padding: calc(var(--espaco) * 1.5);
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  border: 1px solid var(--cor-ciano);
+  border-radius: var(--raio);
+  box-shadow: var(--brilho-ciano);
+}
+
+.modal-config::backdrop {
+  background: rgba(5, 3, 13, 0.8);
+  backdrop-filter: blur(3px);
+}
+
+.modal-config h2 {
+  margin-top: 0;
+  font-family: var(--fonte-titulo);
+  font-size: 1.1rem;
+  color: var(--cor-ciano);
+}
+
+.modal-config .campo input {
+  width: 100%;
+}
+
+.modal-config__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--espaco);
+}
+
+/* Tela de pedido: painel azul-marinho com campos em linha */
+.pedido {
+  --pedido-fundo: #0b2559;
+  --pedido-campo-leitura: #4f6188;
+  --pedido-cabecalho: #cfe2ff;
+  --pedido-ciano: #0dcaf0;
+  --pedido-verde: #198754;
+  --pedido-vermelho: #dc3545;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 0 0 16px 0;
+  background: var(--pedido-fundo);
+  color: #fff;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+.pedido__linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.pedido__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+
+.pedido__campo--largo {
+  flex: 1 1 200px;
+}
+
+.pedido input,
+.pedido select {
+  padding: 8px;
+  border: 0;
+  border-radius: 6px;
+  background: #fff;
+  color: #212529;
+  font: inherit;
+}
+
+.pedido input[readonly] {
+  background: var(--pedido-campo-leitura);
+  color: #fff;
+}
+
+.pedido button {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pedido__busca {
+  background: var(--pedido-ciano);
+}
+
+.pedido__adicionar,
+.pedido__confirmar {
+  background: var(--pedido-verde);
+}
+
+.pedido__fechar,
+.pedido__remover {
+  background: var(--pedido-vermelho);
+}
+
+.pedido__tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pedido__tabela th {
+  padding: 10px;
+  background: var(--pedido-cabecalho);
+  color: #000;
+  text-align: center;
+}
+
+.pedido__tabela td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pedido__rodape {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+/* Ações de linha (Editar / Excluir) nas tabelas de cadastro */
+.acao-editar,
+.acao-excluir {
+  padding: 4px 10px;
+  margin-right: 6px;
+}
+
+.acao-excluir {
+  border-color: var(--cor-magenta);
+  color: var(--cor-magenta);
+}
+
+/* Pedido compacto: cabeçalho enxuto, itens com rolagem e botões sempre visíveis */
+.cartao--pedido {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.cartao--pedido h2 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.cartao--pedido .lista-pedidos {
+  margin: 6px 0 0;
+}
+
+.cartao--pedido .pedido {
+  gap: 8px;
+  padding: 8px;
+}
+
+.cartao--pedido .pedido__campo {
+  font-size: 0.8rem;
+  gap: 2px;
+}
+
+.cartao--pedido .pedido input,
+.cartao--pedido .pedido select,
+.cartao--pedido .pedido button {
+  padding: 5px 8px;
+}
+
+.cartao--pedido .pedido__linha--produto input[name="quantidade"],
+.cartao--pedido .pedido__linha--produto input[name="unitario"],
+.cartao--pedido .pedido__linha--produto input[name="totalItem"] {
+  width: 90px;
+}
+
+.cartao--pedido .pedido .mensagem {
+  min-height: 0;
+  margin: 0;
+}
+
+.pedido__itens {
+  max-height: calc(100vh - 360px);
+  min-height: 90px;
+  overflow-y: auto;
+}
+
+.pedido__tabela th {
+  position: sticky;
+  top: 0;
+  padding: 6px;
+}
+
+.cartao--pedido .pedido__tabela td {
+  padding: 4px 8px;
+}
+
+.pedido__rodape {
+  position: sticky;
+  bottom: 0;
+  padding: 8px 0 0;
+  background: var(--pedido-fundo);
+}
+
+/* Modal de impressão do pedido */
+.modal-pedido {
+  width: min(900px, 94vw);
+  max-height: 92vh;
+  padding: 16px;
+  border: 0;
+  border-radius: 12px;
+  background: #f3f4f6;
+  color: #374151;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.modal-pedido::backdrop {
+  background: rgba(5, 3, 13, 0.8);
+}
+
+.modal-pedido__acoes {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.modal-pedido__imprimir {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.modal-pedido__documento {
+  padding: 24px 32px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.modal-pedido__numero {
+  margin: 0 0 12px;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.modal-pedido__dado {
+  margin: 2px 0;
+  font-weight: 600;
+}
+
+.modal-pedido__valor {
+  font-weight: 400;
+}
+
+.modal-pedido__subtitulo {
+  margin: 16px 0 8px;
+  text-align: center;
+  color: #2563eb;
+}
+
+.modal-pedido__tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modal-pedido__tabela th,
+.modal-pedido__tabela td {
+  padding: 4px 8px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.modal-pedido__tabela th {
+  background: #f9fafb;
+}
+
+.modal-pedido__tabela td:first-child,
+.modal-pedido__tabela th:first-child {
+  text-align: left;
+}
+
+.modal-pedido__total {
+  margin: 8px 0 0;
+  text-align: right;
+  font-weight: 700;
+}
+
+@media print {
+  body > *:not(.modal-pedido) {
+    display: none !important;
+  }
+
+  .modal-pedido {
+    position: static;
+    width: 100%;
+    max-height: none;
+    padding: 0;
+    background: #fff;
+  }
+
+  .modal-pedido__acoes {
+    display: none;
+  }
+}
+
+/* Consulta de pedidos */
+.acao-ver,
+.acao-concluir,
+.acao-novo {
+  padding: 4px 10px;
+  margin-right: 6px;
+}
+
+.acao-concluir {
+  border-color: #3ddc84;
+  color: #3ddc84;
+}
+
+.acao-novo {
+  margin-bottom: 8px;
+  padding: 6px 14px;
+}

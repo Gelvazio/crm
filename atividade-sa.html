@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SA — Testes unitários: condição de pagamento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/estilo.css" />
+    <style>
+      .documento { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+      .documento h1 { font-family: var(--fonte-titulo); color: var(--cor-ciano); text-shadow: var(--brilho-ciano); }
+      .documento h3 { color: var(--cor-magenta); font-family: var(--fonte-titulo); font-size: 0.95rem; }
+      .documento table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+      .documento th, .documento td { padding: 8px; text-align: left; vertical-align: top; border: 1px solid var(--cor-borda); }
+      .documento th { color: var(--cor-ciano); width: 28%; }
+      .documento code, .documento pre { font-family: var(--fonte-dados); color: var(--cor-ciano); }
+      .documento pre { padding: 12px; overflow-x: auto; background: rgba(5, 3, 13, 0.85); border: 1px solid var(--cor-borda); border-radius: 6px; font-size: 0.85rem; line-height: 1.5; }
+      .documento li { margin-bottom: 4px; }
+      .documento a { color: var(--cor-ciano); }
+      .documento__acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+      .botao--link { display: inline-block; text-decoration: none; }
+      .documento__topo { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+      .exercicio-box { margin: 12px 0; padding: 14px; border: 1px solid var(--cor-borda); border-radius: 8px; background: rgba(5, 3, 13, 0.6); }
+      .exercicio-header { margin-bottom: 8px; font-family: var(--fonte-titulo); color: var(--cor-magenta); }
+      .exercicio-label { font-weight: 700; color: var(--cor-ciano); }
+      .resposta-linha { height: 24px; border-bottom: 1px solid var(--cor-borda); }
+      .passo { padding: calc(var(--espaco) * 1.25); margin-bottom: var(--espaco); background: var(--cor-superficie); border: 1px solid var(--cor-borda); border-radius: var(--raio); box-shadow: var(--brilho-ciano); }
+      .passo h2 { margin-top: 0; font-family: var(--fonte-titulo); font-size: 1.1rem; color: var(--cor-ciano); }
+      .passo__n { display: inline-grid; place-items: center; width: 2em; height: 2em; margin-right: 8px; color: #05030d; background: var(--cor-magenta); border-radius: 50%; font-size: 0.8em; }
+      .indice { columns: 2; }
+      .dica { padding: 8px 12px; border-left: 3px solid var(--cor-magenta); color: var(--cor-texto-suave); }
+      .checklist { list-style: none; padding-left: 0; }
+      .aula-guiada__titulo { margin-top: 40px; }
+      @media (max-width: 720px) { .indice { columns: 1; } }
+      @media print { .documento__topo button { display: none; } }
+    </style>
+  </head>
+  <body>
+    <div class="grade" aria-hidden="true"></div>
+    <main class="documento">
+      <div class="documento__topo">
+        <h1>PLANO DE ENSINO — Situação de Aprendizagem</h1>
+        <div class="documento__acoes">
+          <button class="botao" id="botao-pdf" type="button">📥 Exportar PDF</button>
+          <a class="botao botao--secundario botao--link" href="#aula-guiada">AULA GUIADA</a>
+        </div>
+      </div>
+
+      <section class="cartao">
+        <h2>Identificação</h2>
+        <table>
+          <tr><th>Curso</th><td>Técnico em Informática para Internet</td></tr>
+          <tr><th>Unidade Curricular</th><td>Testes de Front-End</td></tr>
+          <tr><th>Aula de referência</th><td>Aula 03 — Testes Unitários no Front-End com Vitest (4 h)</td></tr>
+          <tr><th>Situação de Aprendizagem nº</th><td>1</td></tr>
+        </table>
+      </section>
+
+      <section class="cartao">
+        <h2>Capacidades</h2>
+        <h3>Capacidades Básicas</h3>
+        <p>—</p>
+        <h3>Capacidades Técnicas</h3>
+        <ul>
+          <li>C5 — Desenvolver conjunto de testes automatizados.</li>
+          <li>Definir automação de testes e o que é um teste unitário (2.1).</li>
+          <li>Reconhecer os frameworks de teste do front-end e o papel do Vitest (2.2).</li>
+          <li>Preparar um projeto Vite com Vitest e rodar a suíte pelo terminal (2.3).</li>
+          <li>Aplicar a visão de caixa branca para testar cada caminho de uma função (3.2).</li>
+          <li>Isolar dependências com mock (<code>vi.fn</code>).</li>
+        </ul>
+        <h3>Capacidades Socioemocionais</h3>
+        <ul>
+          <li>Aplicar os princípios de organização nas atividades sob sua responsabilidade.</li>
+          <li>Reconhecer os diferentes comportamentos das pessoas nos grupos e nas equipes (turma e docente trabalhando juntos).</li>
+        </ul>
+      </section>
+
+      <section class="cartao">
+        <h2>Estratégia de Aprendizagem Desafiadora</h2>
+        <p>( X ) Situação-Problema &nbsp; ( &nbsp;) Estudo de Caso &nbsp; ( &nbsp;) Projeto &nbsp; ( &nbsp;) Pesquisa Aplicada</p>
+      </section>
+
+      <section class="cartao">
+        <h2>Contextualização</h2>
+        <p>
+          Uma equipe comercial controla clientes, produtos e vendas em planilhas e perde pedidos por
+          erros simples. Um deles é a <strong>condição de pagamento</strong>: alguém cadastra uma
+          condição sem nome ou com zero parcelas, e o pedido sai com a forma de pagar errada. Antes
+          de trocar a planilha por um CRM, o gestor exige que cada parte do sistema nasça com testes
+          automatizados, para que uma alteração futura não quebre o que já funciona (teste de
+          regressão).
+        </p>
+        <p>
+          O CRM é um projeto <strong>Vite</strong> com um arquivo JavaScript por assunto. O
+          docente já implementou o cadastro de condição de pagamento em
+          <code>src/condicao-pagamento.js</code>: ele valida os dados (<code>validarCondicao</code>),
+          grava, atualiza, exclui e lista pela API (<code>cadastrarCondicao</code>,
+          <code>atualizarCondicao</code>, <code>excluirCondicao</code>, <code>listarCondicoes</code>)
+          e monta a tela (<code>criarTelaCondicao</code>). A condição escolhida aparece depois no
+          pedido, no campo "Cond.Pagt".
+        </p>
+      </section>
+
+      <section class="cartao">
+        <h2>Desafio</h2>
+        <p>
+          <strong>Você, como aluno consultor</strong>, foi chamado para garantir a qualidade do
+          cadastro de condição de pagamento. Escreva <strong>um único arquivo de teste</strong>,
+          <code>src/condicao-pagamento.test.js</code>, para o único arquivo de código desta atividade,
+          <code>src/condicao-pagamento.js</code>. Siga o padrão <strong>AAA</strong> (Arrange, Act,
+          Assert), use o matcher mais específico em cada verificação, cubra os valores-limite e
+          substitua a API por <em>mocks</em> onde for preciso provar como ela foi chamada.
+        </p>
+        <p>
+          O docente faz o teste <strong>junto com a turma, em sala</strong>, passo a passo (veja a
+          "Aula guiada" no fim desta página): cada grupo de testes é escrito no quadro, digitado por
+          todos, executado e lido em voz alta antes de seguir.
+        </p>
+        <p>Regras do projeto: <strong>use apenas funções normais (<code>function</code>), sem arrow functions, e <code>{ }</code> em todo <code>if</code></strong>; <strong>não use <code>async</code>/<code>await</code></strong> — encadeie as promessas com <code>.then()</code> e devolva-as com <code>return</code>. A API chega por parâmetro (injeção de dependência), por isso o teste pode trocá-la por uma API falsa ou por um mock.</p>
+      </section>
+
+      <section class="cartao">
+        <h2>Resultados esperados</h2>
+        <ul>
+          <li>Projeto do CRM rodando (<code>npm run dev</code>) com o menu "Cond. Pagto" funcionando.</li>
+          <li>O arquivo <code>src/condicao-pagamento.test.js</code>, com testes para as cinco funções: <code>validarCondicao</code>, <code>cadastrarCondicao</code>, <code>atualizarCondicao</code>, <code>excluirCondicao</code> e <code>listarCondicoes</code>, mais a tela <code>criarTelaCondicao</code>.</li>
+          <li>No mínimo 12 testes, incluindo os valores-limite de parcelas (0, 1, 1.5, texto e vazio).</li>
+          <li>Print do terminal com <code>npx vitest run src/condicao-pagamento.test.js</code> e todos os testes passando.</li>
+        </ul>
+      </section>
+
+      <section class="cartao">
+        <h2>Mapa do arquivo</h2>
+        <table>
+          <tr><th>Função</th><td>Responsabilidade → o que o teste deve provar</td></tr>
+          <tr><th><code>validarCondicao</code></th><td>Devolve a lista de erros → lista vazia quando válida; "Nome obrigatório"; parcelas inteiras e maiores que zero; os dois erros juntos (<code>toEqual</code>, <code>toContain</code>, <code>toHaveLength</code>, <code>it.each</code>).</td></tr>
+          <tr><th><code>cadastrarCondicao</code></th><td>Valida e grava → grava e devolve com <code>id</code>; recusa dados inválidos sem gravar (<code>rejects.toThrow</code>); mock: <code>api.criar</code> chamado com a coleção <code>condicoes</code> e os dados.</td></tr>
+          <tr><th><code>atualizarCondicao</code></th><td>Valida e atualiza → devolve a condição com os novos dados; recusa dados inválidos; mock: <code>api.atualizar</code> com coleção, id e dados.</td></tr>
+          <tr><th><code>excluirCondicao</code></th><td>Remove pelo id → <code>true</code> quando existia, <code>false</code> quando não existia; mock: <code>api.remover</code> com coleção e id.</td></tr>
+          <tr><th><code>listarCondicoes</code></th><td>Lista a coleção → lista vazia no começo e com a condição depois de cadastrar.</td></tr>
+          <tr><th><code>criarTelaCondicao</code></th><td>Molde de cadastro → a condição cadastrada aparece na tabela; salvar sem nome mostra a mensagem de erro (jsdom).</td></tr>
+        </table>
+      </section>
+
+      <section class="cartao">
+        <h2>Passo a passo</h2>
+        <ol>
+          <li><strong>Passo 0 (20 min):</strong> abrir o projeto, rodar <code>npm install</code> e <code>npm test</code> e ler o <code>condicao-pagamento.js</code> inteiro (visão de caixa branca).</li>
+          <li><strong>Planejar (20 min):</strong> a turma e o docente listam no quadro os casos de teste (função, cenário, entrada, esperado e matcher).</li>
+          <li><strong>Teste 1 — <code>validarCondicao</code> (40 min):</strong> padrão AAA, <code>toEqual</code>, <code>toContain</code> e valores-limite com <code>it.each</code>.</li>
+          <li><strong>Teste 2 — cadastro com promessas (45 min):</strong> API falsa em memória, <code>beforeEach</code>, <code>return</code> da promessa e <code>rejects.toThrow</code>.</li>
+          <li><strong>Teste 3 — mock da API (25 min):</strong> <code>vi.fn</code>, <code>mockResolvedValue</code>, <code>toHaveBeenCalledWith</code> e <code>not.toHaveBeenCalled</code>.</li>
+          <li><strong>Teste 4 — tela (15 min):</strong> jsdom, <code>vi.waitFor</code> e a mensagem de erro.</li>
+          <li><strong>Dinâmica "Mutante sobrevivente" (25 min):</strong> em dupla, uma pessoa estraga o <code>condicao-pagamento.js</code> (por exemplo, troca <code>&lt; 1</code> por <code>&lt;= 1</code>); se nenhum teste falhar, a outra escreve o teste que faltava.</li>
+          <li>Tirar o print de <code>npx vitest run src/condicao-pagamento.test.js</code> e entregar o arquivo de teste.</li>
+        </ol>
+      </section>
+
+      <section class="cartao">
+        <h2>Plano de aula (4 h = 240 min)</h2>
+        <table>
+          <tr><th>Momento</th><td>Tempo — o que acontece</td></tr>
+          <tr><th>Retomada</th><td>15 min — quiz sobre plano e casos de teste.</td></tr>
+          <tr><th>Exposição</th><td>40 min — automação, Vitest, AAA e matchers.</td></tr>
+          <tr><th>Prática guiada</th><td>60 min — passo 0, planejamento e Teste 1 (<code>validarCondicao</code>), feitos pelo docente com a turma.</td></tr>
+          <tr><th>Intervalo</th><td>15 min.</td></tr>
+          <tr><th>Prática guiada</th><td>70 min — Teste 2 (cadastro com promessas) e Teste 3 (mock), docente e turma juntos.</td></tr>
+          <tr><th>Tela e dinâmica</th><td>40 min — Teste 4 (tela) e "Mutante sobrevivente" em dupla.</td></tr>
+        </table>
+      </section>
+
+      <section class="cartao">
+        <h2>Critérios de avaliação</h2>
+        <table>
+          <tr><th>Indicador</th><td>Critério (Sim/Não)</td></tr>
+          <tr><th>(6) Escreve testes unitários com padrão AAA e matchers adequados (C5)</th><td>
+            ( ) O arquivo <code>condicao-pagamento.test.js</code> testa todas as funções do <code>condicao-pagamento.js</code>.<br />
+            ( ) Cada teste tem nome que descreve o comportamento esperado e é independente dos demais.<br />
+            ( ) Os matchers são os mais específicos (<code>toBe</code>, <code>toEqual</code>, <code>toContain</code>, <code>toHaveLength</code>, <code>rejects.toThrow</code>).<br />
+            ( ) Valores-limite de parcelas e todos os caminhos (caixa branca) estão cobertos.<br />
+            ( ) Usa mock (<code>vi.fn</code>) para provar como a API foi chamada; não há <code>await</code> no arquivo.<br />
+            ( ) <code>npx vitest run src/condicao-pagamento.test.js</code> passa com todos os testes.
+          </td></tr>
+        </table>
+      </section>
+
+      <section class="cartao" id="exercicios-modulo">
+        <h2>Itens da atividade</h2>
+
+        <div class="exercicio-box">
+          <div class="exercicio-header">ITEM 1 - Padrão AAA</div>
+          <p><span class="exercicio-label">CAPACIDADE:</span> C5 - Desenvolver conjunto de testes automatizados.</p>
+          <p><span class="exercicio-label">Contexto:</span> Você, como aluno consultor, recebeu a função <code>validarCondicao</code> do CRM sem nenhum teste.</p>
+          <p><span class="exercicio-label">Comando:</span> Escreva um teste em <code>condicao-pagamento.test.js</code> no padrão AAA (Arrange, Act, Assert) que comprove que uma condição válida (<code>À vista</code>, 1 parcela) não gera erros, e marque no código onde está cada etapa.</p>
+          <p><span class="exercicio-label">Resposta:</span></p>
+        </div>
+
+        <div class="exercicio-box">
+          <div class="exercicio-header">ITEM 2 - Valores-limite e caixa branca</div>
+          <p><span class="exercicio-label">CAPACIDADE:</span> Aplicar a visão de caixa branca para testar cada caminho de uma função (3.2).</p>
+          <p><span class="exercicio-label">Contexto:</span> O número de parcelas só é aceito quando é um inteiro maior ou igual a 1.</p>
+          <p><span class="exercicio-label">Comando:</span> Liste os valores-limite que você testaria (abaixo, no limite e acima) e escreva o teste com <code>it.each</code> para recusar 0, -1, 1.5, o texto "2" e <code>undefined</code> e aceitar 1, 2 e 12.</p>
+          <p><span class="exercicio-label">Resposta:</span></p>
+        </div>
+
+        <div class="exercicio-box">
+          <div class="exercicio-header">ITEM 3 - Matchers e promessas</div>
+          <p><span class="exercicio-label">CAPACIDADE:</span> Escrever testes unitários com matchers adequados (C5).</p>
+          <p><span class="exercicio-label">Contexto:</span> <code>cadastrarCondicao</code> devolve uma promessa: grava quando os dados são válidos e recusa com a lista de erros quando não são.</p>
+          <p><span class="exercicio-label">Comando:</span> Escolha o matcher para cada verificação e justifique: comparar a lista salva com <code>id</code>; esperar a recusa "Nome obrigatório"; conferir que nada foi gravado depois da recusa. Explique o que acontece se você esquecer o <code>return</code> da promessa.</p>
+          <p><span class="exercicio-label">Resposta:</span></p>
+        </div>
+
+        <div class="exercicio-box">
+          <div class="exercicio-header">ITEM 4 - Mock e isolamento</div>
+          <p><span class="exercicio-label">CAPACIDADE:</span> Isolar dependências com mock (<code>vi.fn</code>).</p>
+          <p><span class="exercicio-label">Contexto:</span> As funções recebem a API por parâmetro, em vez de acessar o banco direto.</p>
+          <p><span class="exercicio-label">Comando:</span> Crie uma API falsa com <code>vi.fn().mockResolvedValue</code> e prove que <code>cadastrarCondicao</code> chama <code>criar('condicoes', dados)</code> quando os dados são válidos e que <code>criar</code> não é chamado quando são inválidos. Explique por que o teste não usa o json-server real.</p>
+          <p><span class="exercicio-label">Resposta:</span></p>
+        </div>
+      </section>
+
+      <section class="cartao">
+        <h2>Verificação da aprendizagem</h2>
+        <ul>
+          <li>Aponte Arrange, Act e Assert em um teste do seu arquivo.</li>
+          <li>Qual matcher compara <code>[]</code> ou <code>{ id: 1 }</code>? E um erro esperado? E a quantidade de itens de uma lista?</li>
+          <li>Por que cada teste de promessa precisa devolver (<code>return</code>) a promessa?</li>
+          <li>Por que o teste de <code>cadastrarCondicao</code> não deve usar o json-server real?</li>
+        </ul>
+      </section>
+
+      <h2 class="aula-guiada__titulo" id="aula-guiada">AULA GUIADA — testando condicao-pagamento.js</h2>
+      <p>Roteiro para o docente fazer com a turma, em sala, o arquivo
+      <code>src/condicao-pagamento.test.js</code>. Os trechos de código abaixo vêm do arquivo
+      <code>src/condicao-pagamento.exemplo.test.js</code>, que roda de verdade e está sempre passando.
+      No seu arquivo os caminhos de importação são os mesmos (<code>./condicao-pagamento.js</code>).</p>
+      <section class="passo">
+        <h2>Neste roteiro</h2>
+        <ol class="indice"><li><a href="#passo-0">Preparar o ambiente</a></li><li><a href="#passo-1">Ler o código</a></li><li><a href="#passo-2">Planejar os casos</a></li><li><a href="#passo-3">Criar o arquivo e imports</a></li><li><a href="#passo-4">validarCondicao (AAA)</a></li><li><a href="#passo-5">Promessas com API falsa</a></li><li><a href="#passo-6">Mock com vi.fn</a></li><li><a href="#passo-7">Tela com jsdom</a></li><li><a href="#passo-8">Rodar e ler o resultado</a></li><li><a href="#passo-9">Mutante sobrevivente</a></li><li><a href="#passo-10">Checklist</a></li></ol>
+      </section>
+
+      <section class="passo" id="passo-0">
+        <h2><span class="passo__n">0</span> Preparar o ambiente</h2>
+        <p>Antes de escrever qualquer teste, confirme que o projeto roda. Abra o terminal na pasta <code>crm/</code> e execute:</p>
+        <pre><code>npm install
+npm test</code></pre>
+        <ul>
+          <li><code>npm install</code> baixa o Vitest, o jsdom e o json-server (só na primeira vez).</li>
+          <li><code>npm test</code> liga o Vitest em <strong>modo observação</strong>: ele roda os testes de novo sempre que você salva um arquivo. Para rodar uma vez e sair use <code>npm run test:run</code>.</li>
+          <li>Para testar o <code>condicao-pagamento.js</code> <strong>você não precisa ligar o json-server</strong>: os testes usam uma API falsa em memória (<code>api-falsa.js</code>).</li>
+        </ul>
+        <p class="dica">Regra do projeto: nada de <code>async</code>/<code>await</code>. As promessas são encadeadas com <code>.then()</code>.</p>
+      </section>
+
+      <section class="passo" id="passo-1">
+        <h2><span class="passo__n">1</span> Ler o código que será testado</h2>
+        <p>Um bom teste começa pela <strong>leitura do código</strong> (visão de <em>caixa branca</em>): é lendo que descobrimos todos os caminhos que precisam de teste. Este é o <code>src/condicao-pagamento.js</code>; cada parte tem uma linha de comentário dizendo o que ela faz:</p>
+        <pre data-fonte="src/condicao-pagamento.js" data-passo="1"><code>/** Cadastro de condição de pagamento: validação, acesso à API e tela. */
+
+// Importa o molde de tela de cadastro (formulário + tabela) usado por todos os cadastros.
+import { criarTelaCadastro } from './tela.js';
+
+// Nome da coleção no banco (json-server) onde as condições ficam guardadas.
+export const COLECAO_CONDICOES = 'condicoes';
+// Campos do formulário: o que a pessoa digita ao cadastrar uma condição.
+export const CAMPOS_CONDICAO = [
+  { nome: 'nome', rotulo: 'Nome', tipo: 'text' },
+  { nome: 'parcelas', rotulo: 'Parcelas', tipo: 'number' },
+];
+// Colunas da tabela: o que a tela mostra de cada condição cadastrada.
+const COLUNAS_CONDICAO = [
+  { chave: 'id', rotulo: 'ID' },
+  { chave: 'nome', rotulo: 'Nome' },
+  { chave: 'parcelas', rotulo: 'Parcelas' },
+];
+
+/**
+ * Confere os dados de uma condição de pagamento.
+ * @param {{nome: string, parcelas: number}} condicao - Dados.
+ * @returns {string[]} Lista de erros (vazia quando está tudo certo).
+ */
+export function validarCondicao(condicao) {
+  // Começa sem erros; cada regra quebrada acrescenta uma mensagem nesta lista.
+  const erros = [];
+  // Regra 1: o nome é obrigatório (vazio ou ausente é erro).
+  if (!condicao.nome) {
+    erros.push('Nome obrigatório');
+  }
+  // Regra 2: parcelas precisa ser número inteiro e pelo menos 1.
+  if (!Number.isInteger(condicao.parcelas) || condicao.parcelas &lt; 1) {
+    erros.push('Parcelas deve ser um inteiro maior que zero');
+  }
+  // Devolve a lista: vazia significa que os dados estão válidos.
+  return erros;
+}
+
+/**
+ * Valida e grava uma condição de pagamento.
+ * @param {object} api - API injetada.
+ * @param {object} dados - Dados da condição.
+ * @returns {Promise&lt;object&gt;} Condição salva, com id (recusa se os dados forem inválidos).
+ */
+export function cadastrarCondicao(api, dados) {
+  // Primeiro confere os dados com a validação.
+  const erros = validarCondicao(dados);
+  // Se houver erro, recusa a promessa com todas as mensagens juntas e não grava nada.
+  if (erros.length &gt; 0) {
+    return Promise.reject(new Error(erros.join('; ')));
+  }
+  // Dados válidos: manda a API criar a condição na coleção e devolve o resultado.
+  return api.criar(COLECAO_CONDICOES, dados);
+}
+
+/**
+ * Valida e atualiza uma condição de pagamento.
+ * @param {object} api - API injetada.
+ * @param {number} id - Id da condição.
+ * @param {object} dados - Novos dados.
+ * @returns {Promise&lt;object&gt;} Condição atualizada (recusa se os dados forem inválidos).
+ */
+export function atualizarCondicao(api, id, dados) {
+  // Confere os novos dados com a mesma validação do cadastro.
+  const erros = validarCondicao(dados);
+  // Se houver erro, recusa a promessa e não altera nada no banco.
+  if (erros.length &gt; 0) {
+    return Promise.reject(new Error(erros.join('; ')));
+  }
+  // Dados válidos: manda a API atualizar a condição que tem esse id.
+  return api.atualizar(COLECAO_CONDICOES, id, dados);
+}
+
+/**
+ * @param {object} api - API injetada.
+ * @param {number} id - Id da condição a excluir.
+ * @returns {Promise&lt;boolean&gt;} true se excluiu.
+ */
+export function excluirCondicao(api, id) {
+  // Pede para a API remover a condição desse id (true se existia, false se não).
+  return api.remover(COLECAO_CONDICOES, id);
+}
+
+/**
+ * @param {object} api - API injetada.
+ * @returns {Promise&lt;object[]&gt;} Todas as condições de pagamento.
+ */
+export function listarCondicoes(api) {
+  // Pede para a API devolver todas as condições da coleção.
+  return api.listar(COLECAO_CONDICOES);
+}
+
+/**
+ * Monta a tela de condições de pagamento.
+ * @param {object} api - API injetada.
+ * @returns {HTMLElement} Seção da tela.
+ */
+export function criarTelaCondicao(api) {
+  // Entrega ao molde de cadastro o que mostrar e a função de cada ação da tela.
+  return criarTelaCadastro({
+    titulo: 'Condições de Pagamento',
+    campos: CAMPOS_CONDICAO,
+    colunas: COLUNAS_CONDICAO,
+    // Botão Salvar: cadastra a condição digitada.
+    aoSalvar: function (dados) {
+      return cadastrarCondicao(api, dados);
+    },
+    // Busca as condições para a tela desenhar a tabela.
+    aoListar: function () {
+      return listarCondicoes(api);
+    },
+    // Botão Atualizar: grava as mudanças da condição em edição.
+    aoAtualizar: function (id, dados) {
+      return atualizarCondicao(api, id, dados);
+    },
+    // Botão Excluir de uma linha da tabela.
+    aoExcluir: function (id) {
+      return excluirCondicao(api, id);
+    },
+  });
+}</code></pre>
+        <p>O que existe para testar:</p>
+        <table>
+          <thead><tr><td>Item</td><td>O que faz</td><td>Caminhos</td></tr></thead>
+          <tbody>
+            <tr><td><code>validarCondicao(condicao)</code></td><td>Devolve a lista de erros</td><td>nome vazio · parcelas inválidas · os dois erros · tudo certo</td></tr>
+            <tr><td><code>cadastrarCondicao(api, dados)</code></td><td>Valida e grava</td><td>inválido (recusa, não grava) · válido (grava)</td></tr>
+            <tr><td><code>atualizarCondicao(api, id, dados)</code></td><td>Valida e atualiza</td><td>inválido (recusa) · válido (atualiza)</td></tr>
+            <tr><td><code>excluirCondicao(api, id)</code></td><td>Remove pelo id</td><td>existe (<code>true</code>) · não existe (<code>false</code>)</td></tr>
+            <tr><td><code>listarCondicoes(api)</code></td><td>Lista a coleção</td><td>vazia · com itens</td></tr>
+            <tr><td><code>criarTelaCondicao(api)</code></td><td>Monta a tela com formulário e tabela</td><td>lista a condição · mostra erro ao salvar sem nome</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="passo" id="passo-2">
+        <h2><span class="passo__n">2</span> Planejar os casos de teste</h2>
+        <p>Antes do código, escreva no quadro <strong>o que cada teste vai provar</strong>. Cada linha vira um <code>it(...)</code>. O <em>nome</em> do teste descreve o comportamento esperado.</p>
+        <table>
+          <thead><tr><td>Função</td><td>Cenário</td><td>Entrada</td><td>Esperado</td><td>Matcher</td></tr></thead>
+          <tbody>
+            <tr><td>validarCondicao</td><td>válida</td><td>À vista / 1</td><td><code>[]</code></td><td><code>toEqual</code></td></tr>
+            <tr><td>validarCondicao</td><td>sem nome</td><td>'' / 1</td><td>'Nome obrigatório'</td><td><code>toEqual</code></td></tr>
+            <tr><td>validarCondicao</td><td>nome e parcelas errados</td><td>'' / 0</td><td>2 erros</td><td><code>toHaveLength</code></td></tr>
+            <tr><td>validarCondicao</td><td>parcelas inválidas (limites)</td><td>0, -1, 1.5, '2', undefined</td><td>erro de parcelas</td><td><code>toContain</code> + <code>it.each</code></td></tr>
+            <tr><td>validarCondicao</td><td>parcelas válidas</td><td>1, 2, 12</td><td><code>[]</code></td><td><code>toEqual</code> + <code>it.each</code></td></tr>
+            <tr><td>cadastrarCondicao</td><td>sucesso</td><td>condição válida</td><td>encontrada depois, com id</td><td><code>toEqual</code></td></tr>
+            <tr><td>cadastrarCondicao</td><td>dados inválidos</td><td>'' / 0</td><td>recusa e não grava</td><td><code>rejects.toThrow</code> + <code>toHaveLength</code></td></tr>
+            <tr><td>atualizarCondicao</td><td>sucesso e inválido</td><td>id 1</td><td>novos dados · recusa</td><td><code>toEqual</code> · <code>rejects.toThrow</code></td></tr>
+            <tr><td>excluirCondicao</td><td>existe e não existe</td><td>id 1 · id 99</td><td><code>true</code> · <code>false</code></td><td><code>toBe</code></td></tr>
+            <tr><td>cadastrarCondicao (mock)</td><td>inválida</td><td>API falsa com <code>vi.fn()</code></td><td><code>criar</code> não é chamado</td><td><code>not.toHaveBeenCalled</code></td></tr>
+            <tr><td>cadastrar/atualizar/excluir (mock)</td><td>válidas</td><td>API falsa com <code>vi.fn()</code></td><td>coleção, id e dados corretos</td><td><code>toHaveBeenCalledWith</code></td></tr>
+            <tr><td>criarTelaCondicao</td><td>listar e erro</td><td>1 condição · sem nome</td><td>linha na tabela · mensagem</td><td><code>toContain</code> · <code>toBe</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="passo" id="passo-3">
+        <h2><span class="passo__n">3</span> Criar o arquivo e importar as ferramentas</h2>
+        <p>Crie o arquivo <code>src/condicao-pagamento.test.js</code> (mesma pasta e mesmo nome do código, mais <code>.test.js</code>) e comece pelos <code>import</code>:</p>
+        <pre data-fonte="src/condicao-pagamento.exemplo.test.js" data-passo="3"><code>// 3.1 Ferramentas do Vitest: describe agrupa, it é um caso de teste, expect confere o resultado,
+//     beforeEach roda antes de cada teste e vi cria mocks (substitutos controlados).
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+// 3.2 A API falsa guarda os dados em memória: o teste não precisa do json-server ligado.
+import { criarApiFalsa } from './api-falsa.js';
+// 3.3 O que vamos testar (o nome do arquivo de teste é o do código + ".test.js").
+import {
+  atualizarCondicao, cadastrarCondicao, criarTelaCondicao, excluirCondicao, listarCondicoes,
+  validarCondicao,
+} from './condicao-pagamento.js';
+
+// 3.4 Dado de apoio: uma condição válida que várias vezes serve de ponto de partida.
+const CONDICAO_OK = { nome: '30/60 dias', parcelas: 2 };</code></pre>
+        <ul>
+          <li><code>describe</code> agrupa os testes de uma mesma unidade; <code>it</code> é um caso de teste.</li>
+          <li><code>expect(valor).matcher(esperado)</code> é a conferência (o <em>Assert</em>).</li>
+          <li><code>vi</code> é a caixa de ferramentas de mocks do Vitest.</li>
+          <li>A <strong>API falsa</strong> troca o json-server por dados em memória: o teste fica rápido e não depende de rede.</li>
+        </ul>
+      </section>
+
+      <section class="passo" id="passo-4">
+        <h2><span class="passo__n">4</span> Testar uma função simples: validarCondicao (padrão AAA)</h2>
+        <p>Todo teste segue três etapas: <strong>Arrange</strong> (preparar), <strong>Act</strong> (agir) e <strong>Assert</strong> (conferir). Aqui também entram os <strong>valores-limite</strong>: não basta testar o valor certo, teste os vizinhos errados.</p>
+        <pre data-fonte="src/condicao-pagamento.exemplo.test.js" data-passo="4"><code>// PASSO 4 — Função simples e síncrona: validarCondicao devolve uma LISTA de erros
+// (lista vazia = tudo certo). Aqui entram os valores-limite: teste também os vizinhos errados.
+// describe agrupa todos os testes da função validarCondicao.
+describe('validarCondicao', function () {
+  // Caminho 1: condição válida não gera nenhum erro.
+  it('devolve lista vazia para uma condição válida', function () {
+    // Arrange (preparar): a condição que vamos avaliar
+    const condicao = { nome: 'À vista', parcelas: 1 };
+
+    // Act (agir): chamamos a função exatamente uma vez
+    const erros = validarCondicao(condicao);
+
+    // Assert (conferir): toEqual compara o CONTEÚDO de listas e objetos (toBe compararia a referência)
+    expect(erros).toEqual([]);
+  });
+
+  // Caminho 2: sem nome, só o erro do nome aparece.
+  it('exige o nome', function () {
+    expect(validarCondicao({ nome: '', parcelas: 1 })).toEqual(['Nome obrigatório']);
+  });
+
+  // Caminho 3: nome e parcelas errados ao mesmo tempo geram dois erros.
+  it('acumula os dois erros quando nome e parcelas estão errados', function () {
+    // toHaveLength confere só o tamanho da lista
+    expect(validarCondicao({ nome: '', parcelas: 0 })).toHaveLength(2);
+  });
+
+  // Valores-limite: it.each repete o mesmo teste para vários valores (%s vira o valor)
+  it.each([0, -1, 1.5, '2', undefined])('recusa parcelas = %s (só inteiro &gt;= 1 vale)', function (parcelas) {
+    // toContain confere se UM item está dentro da lista, sem exigir a lista inteira
+    expect(validarCondicao({ ...CONDICAO_OK, parcelas })).toContain(
+      'Parcelas deve ser um inteiro maior que zero',
+    );
+  });
+
+  // Mesmos limites, agora com valores que devem ser aceitos.
+  it.each([1, 2, 12])('aceita parcelas = %s', function (parcelas) {
+    expect(validarCondicao({ ...CONDICAO_OK, parcelas })).toEqual([]);
+  });
+});</code></pre>
+        <ul>
+          <li>Um <code>it</code> para <strong>cada caminho</strong> da função: válida, sem nome, os dois erros e cada tipo de parcela inválida.</li>
+          <li><code>toEqual</code> compara o <em>conteúdo</em> de listas e objetos; <code>toBe</code> compararia a referência.</li>
+          <li><code>toContain</code> confere se <em>um</em> item está na lista, sem exigir a lista toda.</li>
+          <li><code>it.each([...])</code> repete o mesmo teste para vários valores e evita copiar e colar.</li>
+          <li>Use o matcher <strong>mais específico</strong>: <code>toEqual([])</code> diz mais que <code>toBeFalsy()</code>.</li>
+          <li>Cada teste é <strong>independente</strong>: não depende da ordem nem do resultado de outro.</li>
+        </ul>
+      </section>
+
+      <section class="passo" id="passo-5">
+        <h2><span class="passo__n">5</span> Testar as funções com promessa (sem await)</h2>
+        <p>O banco responde de forma assíncrona (<code>fetch</code>). Como o projeto não usa <code>await</code>, cada teste <strong>devolve</strong> (<code>return</code>) a promessa encadeada com <code>.then</code>:</p>
+        <pre data-fonte="src/condicao-pagamento.exemplo.test.js" data-passo="5"><code>// PASSO 5 — Funções com promessa: o banco responde de forma assíncrona (fetch), então cada teste
+// DEVOLVE (return) a promessa encadeada com .then. Sem o return o teste termina antes
+// do resultado chegar e "passa" sem conferir nada.
+// describe agrupa os testes que usam a API falsa (dados em memória).
+describe('cadastro de condições (API falsa)', function () {
+  let api;
+
+  // beforeEach: um banco novo e vazio antes de CADA teste, para um não depender do outro
+  beforeEach(function () {
+    api = criarApiFalsa();
+  });
+
+  // Cadastrar e depois listar prova que a condição foi mesmo gravada.
+  it('cadastra e depois encontra a condição na lista', function () {
+    return cadastrarCondicao(api, CONDICAO_OK) // Arrange + Act
+      .then(function () {
+        return listarCondicoes(api); // Act
+      })
+      .then(function (lista) {
+        // Assert: o banco acrescentou o id sozinho
+        expect(lista).toEqual([{ ...CONDICAO_OK, id: 1 }]);
+      });
+  });
+
+  // Dados inválidos: a promessa é recusada e a lista continua vazia.
+  it('recusa dados inválidos e não grava nada', function () {
+    const invalida = cadastrarCondicao(api, { nome: '', parcelas: 0 });
+
+    // rejects + toThrow: a promessa deve ser RECUSADA com esta mensagem (sem await)
+    return expect(invalida)
+      .rejects.toThrow('Nome obrigatório; Parcelas deve ser um inteiro maior que zero')
+      .then(function () {
+        return listarCondicoes(api);
+      })
+      .then(function (lista) {
+        expect(lista).toHaveLength(0);
+      });
+  });
+
+  // Atualizar: o resultado traz os novos dados e o mesmo id.
+  it('atualiza uma condição existente', function () {
+    return cadastrarCondicao(api, CONDICAO_OK)
+      .then(function () {
+        return atualizarCondicao(api, 1, { nome: 'À vista', parcelas: 1 });
+      })
+      .then(function (atualizada) {
+        expect(atualizada).toEqual({ nome: 'À vista', parcelas: 1, id: 1 });
+      });
+  });
+
+  // Atualizar com dado inválido é recusado, igual ao cadastro.
+  it('recusa atualizar com dados inválidos', function () {
+    const invalida = atualizarCondicao(api, 1, { nome: '', parcelas: 1 });
+
+    return expect(invalida).rejects.toThrow('Nome obrigatório');
+  });
+
+  // Excluir uma condição que existe devolve true e some da lista.
+  it('exclui a condição e devolve true', function () {
+    return cadastrarCondicao(api, CONDICAO_OK)
+      .then(function () {
+        return excluirCondicao(api, 1);
+      })
+      .then(function (excluiu) {
+        expect(excluiu).toBe(true);
+        return listarCondicoes(api);
+      })
+      .then(function (lista) {
+        expect(lista).toHaveLength(0);
+      });
+  });
+
+  // Excluir um id que não existe devolve false.
+  it('devolve false ao excluir uma condição que não existe', function () {
+    return excluirCondicao(api, 99).then(function (excluiu) {
+      expect(excluiu).toBe(false);
+    });
+  });
+});</code></pre>
+        <ul>
+          <li><strong>Sem o <code>return</code> o teste termina antes do resultado chegar e passa sem conferir nada</strong> (o erro mais comum).</li>
+          <li><code>beforeEach</code> cria um banco novo antes de cada teste: nenhum teste enxerga os dados do anterior.</li>
+          <li><code>expect(promessa).rejects.toThrow('mensagem')</code> confere uma recusa.</li>
+          <li>O teste de dados inválidos confere duas coisas: a recusa <em>e</em> que nada foi gravado.</li>
+        </ul>
+      </section>
+
+      <section class="passo" id="passo-6">
+        <h2><span class="passo__n">6</span> Isolar a dependência com mock (vi.fn)</h2>
+        <p>Para <em>provar como</em> a API foi usada, trocamos a API por um <strong>mock</strong>: uma função falsa que devolve o que o teste manda e registra como foi chamada.</p>
+        <pre data-fonte="src/condicao-pagamento.exemplo.test.js" data-passo="6"><code>// PASSO 6 — Mock: trocamos a API por um substituto para PROVAR como ela foi usada.
+// describe agrupa os testes que conferem as chamadas feitas à API.
+describe('cadastro de condições com mock da API', function () {
+  // Dados inválidos não podem chegar até a API.
+  it('não chama api.criar quando os dados são inválidos', function () {
+    // vi.fn() cria uma função falsa que registra todas as chamadas recebidas
+    const api = { criar: vi.fn() };
+
+    return cadastrarCondicao(api, { nome: '', parcelas: 1 })
+      .catch(function () {})
+      .then(function () {
+        // not.toHaveBeenCalled: garante que NADA foi gravado
+        expect(api.criar).not.toHaveBeenCalled();
+      });
+  });
+
+  // Dados válidos chegam à API com a coleção e os dados certos.
+  it('chama api.criar na coleção "condicoes" com os dados informados', function () {
+    // mockResolvedValue(x): a função falsa devolve uma promessa já resolvida com x
+    const api = { criar: vi.fn().mockResolvedValue({ id: 1, ...CONDICAO_OK }) };
+
+    return cadastrarCondicao(api, CONDICAO_OK).then(function () {
+      // toHaveBeenCalledWith confere os argumentos da chamada
+      expect(api.criar).toHaveBeenCalledWith('condicoes', CONDICAO_OK);
+    });
+  });
+
+  // Atualizar manda coleção, id e novos dados para a API.
+  it('chama api.atualizar com a coleção, o id e os novos dados', function () {
+    const api = { atualizar: vi.fn().mockResolvedValue({ id: 7, ...CONDICAO_OK }) };
+
+    return atualizarCondicao(api, 7, CONDICAO_OK).then(function () {
+      expect(api.atualizar).toHaveBeenCalledWith('condicoes', 7, CONDICAO_OK);
+    });
+  });
+
+  // Excluir manda a coleção e o id para a API.
+  it('chama api.remover com a coleção e o id', function () {
+    const api = { remover: vi.fn().mockResolvedValue(true) };
+
+    return excluirCondicao(api, 3).then(function () {
+      expect(api.remover).toHaveBeenCalledWith('condicoes', 3);
+    });
+  });
+});</code></pre>
+        <ul>
+          <li><code>vi.fn().mockResolvedValue(x)</code> devolve uma promessa já resolvida com <code>x</code>.</li>
+          <li><code>not.toHaveBeenCalled()</code> prova que <strong>nada</strong> foi gravado quando os dados são inválidos.</li>
+          <li><code>toHaveBeenCalledWith('condicoes', dados)</code> prova que a gravação usou a coleção e os dados certos.</li>
+          <li>As funções recebem a <code>api</code> por parâmetro (injeção de dependência): é isso que torna o mock possível.</li>
+        </ul>
+      </section>
+
+      <section class="passo" id="passo-7">
+        <h2><span class="passo__n">7</span> Testar a tela (DOM) com jsdom</h2>
+        <p>O Vitest roda os testes com o <strong>jsdom</strong>, um navegador de mentira: dá para criar elementos, procurar com <code>querySelector</code> e disparar eventos sem abrir janela.</p>
+        <pre data-fonte="src/condicao-pagamento.exemplo.test.js" data-passo="7"><code>// PASSO 7 — Tela (DOM): o Vitest usa o jsdom, um "navegador de mentira" sem abrir janela.
+// describe agrupa os testes da tela de condições.
+describe('criarTelaCondicao', function () {
+  // A tabela deve mostrar a condição que já está no banco.
+  it('lista a condição cadastrada na tabela', function () {
+    const api = criarApiFalsa({ condicoes: [{ id: 1, ...CONDICAO_OK }] });
+
+    const tela = criarTelaCondicao(api);
+
+    // A tabela é desenhada depois que a lista chega: vi.waitFor repete o expect até passar
+    return vi.waitFor(function () {
+      const linha = tela.querySelector('tbody').rows[0];
+      expect(linha.textContent).toContain('30/60 dias');
+    });
+  });
+
+  // Salvar sem nome deve mostrar o erro embaixo do formulário.
+  it('mostra a mensagem de erro ao salvar sem nome', function () {
+    const tela = criarTelaCondicao(criarApiFalsa());
+    tela.querySelector('[name="parcelas"]').value = '2';
+
+    // dispatchEvent dispara o envio do formulário, como se a pessoa clicasse em Salvar
+    tela.querySelector('form').dispatchEvent(new Event('submit', { cancelable: true }));
+
+    return vi.waitFor(function () {
+      expect(tela.querySelector('.mensagem').textContent).toBe('Nome obrigatório');
+    });
+  });
+});</code></pre>
+        <ul>
+          <li>A tabela só é desenhada <em>depois</em> que a lista chega; <code>vi.waitFor</code> repete o <code>expect</code> até passar (ou estourar o tempo).</li>
+          <li><code>dispatchEvent(new Event('submit'))</code> faz o papel do clique em Salvar.</li>
+        </ul>
+      </section>
+
+      <section class="passo" id="passo-8">
+        <h2><span class="passo__n">8</span> Rodar e ler o resultado</h2>
+        <pre><code>npx vitest run src/condicao-pagamento.test.js</code></pre>
+        <p>Resultado esperado: todos os testes com ✓ e uma linha parecida com <code>Tests  N passed (N)</code>. Se algum falhar, leia o bloco vermelho:</p>
+        <ul>
+          <li><strong>Expected / Received</strong>: o que você esperava e o que a função devolveu.</li>
+          <li>A linha com <code>❯ src/condicao-pagamento.test.js:NN</code> aponta o teste que falhou.</li>
+          <li>Passou rápido demais? Confira se esqueceu o <code>return</code> da promessa.</li>
+        </ul>
+      </section>
+
+      <section class="passo" id="passo-9">
+        <h2><span class="passo__n">9</span> Dinâmica: o mutante sobrevivente</h2>
+        <p>Um teste só tem valor se <strong>falha quando o código está errado</strong>. Em dupla, altere o <code>condicao-pagamento.js</code> e rode os testes:</p>
+        <table>
+          <thead><tr><td>Mutante (alteração)</td><td>Quem deve falhar</td></tr></thead>
+          <tbody>
+            <tr><td>Trocar <code>condicao.parcelas &lt; 1</code> por <code>condicao.parcelas &lt;= 1</code></td><td>"aceita parcelas = 1" e o teste da condição "À vista"</td></tr>
+            <tr><td>Apagar <code>!Number.isInteger(condicao.parcelas) ||</code></td><td>"recusa parcelas = 1.5" e "recusa parcelas = 2" (texto)</td></tr>
+            <tr><td>Apagar a linha <code>if (!condicao.nome)</code> da validação</td><td>"exige o nome"</td></tr>
+            <tr><td>Remover o <code>return Promise.reject(...)</code> do <code>cadastrarCondicao</code></td><td>"recusa dados inválidos e não grava nada" e o mock de <code>criar</code> não chamado</td></tr>
+            <tr><td>Trocar a coleção <code>condicoes</code> por outro nome</td><td>os testes com mock e os de listar</td></tr>
+          </tbody>
+        </table>
+        <p>Se <strong>nenhum teste falhar</strong>, o mutante sobreviveu: escreva o teste que faltava. Depois desfaça a alteração no código.</p>
+      </section>
+
+      <section class="passo" id="passo-10">
+        <h2><span class="passo__n">10</span> Checklist de entrega</h2>
+        <ul class="checklist">
+          <li>☐ Arquivo <code>src/condicao-pagamento.test.js</code> criado, com os 4 grupos (<code>describe</code>) dos passos 4 a 7.</li>
+          <li>☐ Cada teste segue Arrange, Act, Assert e tem um nome que descreve o comportamento.</li>
+          <li>☐ Usei o matcher mais específico em cada conferência.</li>
+          <li>☐ Cobri os valores-limite de parcelas (0, 1, 2, 12, -1, 1.5, texto e <code>undefined</code>).</li>
+          <li>☐ Toda promessa é devolvida com <code>return</code>; não há <code>async</code>/<code>await</code>.</li>
+          <li>☐ Usei pelo menos um mock (<code>vi.fn</code>) e provei como a API foi chamada.</li>
+          <li>☐ <code>npx vitest run src/condicao-pagamento.test.js</code> passa com todos os testes.</li>
+          <li>☐ Fiz a dinâmica do mutante e registrei qual sobreviveu.</li>
+          <li>☐ Tirei o print do terminal com os testes passando.</li>
+        </ul>
+        <p class="dica">Arquivo completo para comparar depois: <code>src/condicao-pagamento.exemplo.test.js</code> (abra no editor).</p>
+      </section>
+    </main>
+    <script type="module" src="/src/atividade.js"></script>
+  </body>
+</html>
