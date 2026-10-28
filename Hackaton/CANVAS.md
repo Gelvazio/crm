@@ -12,7 +12,7 @@ Imagem original: `canvas-hackathon-do-futuro.jpg`
 | 2 | Crie muitas ideias | Uma ideia por post-it | Proteger a quantidade: proibido criticar nesta fase; garantir que todos falem | Líder dominar com a própria ideia | 10 min |
 | 3 | Escolha a melhor | Qual resolve melhor? · Por quê (fácil de fazer, barata, ajuda muitas pessoas, diferente, divertida) | Votar e decidir com timebox; o critério "resolve o problema da etapa 1" vem antes de "divertida" | Escolher a ideia mais legal em vez da mais viável | 7 min |
 | 4 | Desenhe a solução | Desenho de como funciona · Como as pessoas vão usar? | Garantir que o desenho mostre uma pessoa usando, passo a passo | Desenho bonito que não explica o uso | 18 min |
-| 5 | Prepare o pitch | Problema · Solução · Quem se beneficia · Por que deve ganhar · 1 frase para convencer os jurados | Ensaiar com cronômetro; escolher quem apresenta | Pitch que esquece o problema e só fala da ideia | 12 min |
+| 5 | Prepare o pitch | Problema · Solução · Quem se beneficia · Por que deve ganhar · 1 frase para convencer os jurados | Ensaiar com cronômetro; escolher quem apresenta | Pitch que esquece o problema e só fala da ideia | 15 min |
 
 ## Checklist do time (do canvas)
 - [ ] Entendemos o problema
