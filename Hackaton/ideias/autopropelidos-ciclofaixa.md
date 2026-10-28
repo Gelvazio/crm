@@ -6,8 +6,8 @@
 ## 1. Entenda o problema
 - **Qual é o problema?** Autopropelidos (scooters e bicicletas elétricas) andam rápido demais em ciclofaixas perto de escolas e cruzamentos, colocando em risco quem atravessa.
 - **Quem é afetado?** ☑ Crianças ☑ Jovens · Outro: pedestres e ciclistas
-- **Por que isso acontece?** [A DEFINIR] Pergunta: "Por que os pilotos andam rápido ali?" (falta de fiscalização? não percebem a escola? pressa?)
-- **Como sabemos que é um problema?** Mini-pesquisa: "X de 9 alunos já viram" + local observado [A DEFINIR] + prevenção: "ainda não tem notícia aqui, e queremos que continue assim"
+- **Por que isso acontece?** Time: "muitos autopropelidos na cidade". Isso explica mais risco, não a velocidade alta. Pergunta para completar: "E hoje alguém fiscaliza a velocidade deles perto das escolas?"
+- **Como sabemos que é um problema?** [VAZIO: sem notícia e sem pesquisa] A mini-pesquisa não precisa existir antes: é feita na sala, em 1 min, no dia ("X de 9 alunos já viram"). Alternativa: contar os autopropelidos que passam em frente à escola em 10 min.
 
 ## 2. Ideias consideradas
 Frear e bloquear a moto · reduzir a velocidade em certos locais · parar antes do cruzamento · travar a roda · alertar a polícia
@@ -34,13 +34,16 @@ GPS detecta zona de risco (perto da escola)
 | Desenhista | 60 s | Explica os dois caminhos do desenho: verde (segurança) e vermelho (fiscalização). |
 | Redator | 60 s | "Quem ganha são as crianças que atravessam e os próprios pilotos, que muitas vezes são adolescentes." + frase final [A DEFINIR pelo time] |
 
+## Implantação (respostas do time)
+- **Quem instala:** lojas de autopeças.
+- **Quem torna obrigatório:** proposta à Câmara de vereadores. No pitch, dizer "proposta", não "temos apoio". Ressalva: pela Constituição (art. 22), legislar sobre trânsito é da União; a Câmara pode criar as zonas escolares e levar a proposta adiante.
+
 ## Pendências (resolver antes do pitch)
-1. Nome da solução
-2. Por que o problema acontece
+1. Evidência: mini-pesquisa no dia ou contagem em frente à escola
+2. Nome da solução ("Autopeças" é quem instala, não o nome)
 3. Regra que manda para a fiscalização (ex.: acima do limite na zona)
-4. Resultado da mini-pesquisa e local observado
-5. Existe ciclofaixa perto de escola em Rio do Sul? Se não, o local muda.
-6. Frase final para os jurados
+4. Existe ciclofaixa perto de escola em Rio do Sul? Se não, o local muda.
+5. Frase final para os jurados
 
 ## Perguntas prováveis dos jurados
 - "A polícia consegue ir até cada scooter travada?"
