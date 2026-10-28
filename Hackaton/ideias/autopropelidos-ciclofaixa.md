@@ -9,6 +9,17 @@
 2. Objetivo: diminuir a velocidade em determinados locais.
 3. Definido pelo time: autopropelidos em ciclofaixas, GPS, desacelera até parar.
 
+## Respostas do time (2ª rodada)
+- Quem se machuca: "ninguém se machucaria" → respondeu sobre a solução, não sobre o problema de hoje.
+- Onde para: "a roda traseira trava para ela não andar" → descreveu o mecanismo, não o local.
+- Como volta a andar: "uma pessoa específica desbloqueia".
+- Notícia: o time perguntou por que isso importa → é o campo "Como sabemos que é um problema?" do canvas.
+
+## Decisão pendente: um objetivo só
+A ideia mistura três objetivos: diminuir a velocidade, parar antes do perigo e bloquear até alguém liberar. Em 1h30 o time precisa escolher um:
+- **Segurança:** para antes do cruzamento e libera sozinha quando o perigo passa.
+- **Fiscalização:** para e trava até uma pessoa autorizada liberar (quem? quanto tempo o piloto espera? onde?).
+
 ## Pontos fracos (os jurados vão perguntar)
 | Ponto | Resposta atual do time | Problema |
 |-------|------------------------|----------|

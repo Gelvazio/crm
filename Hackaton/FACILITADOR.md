@@ -19,6 +19,8 @@ O `AGENTS.md` descreve o líder de time: use-o para orientar o aluno-líder de c
 | 4. Desenho | Desenho sem pessoa usando | "Me mostra o passo a passo de alguém usando." |
 | 5. Pitch | Começa pela ideia | "O jurado entende o problema nos primeiros 20 segundos?" |
 
+**Dica:** perguntas sobre o problema devem começar com "Hoje, sem a ideia de vocês, ...". Sem isso, alunos dessa idade respondem sobre a solução.
+
 ## Controle do tempo (todos os times)
 - Avisos de 5 minutos antes do fim de cada etapa
 - Time atrasado: avança mesmo assim e completa depois; nunca deixar uma etapa em branco
