@@ -20,6 +20,23 @@ A ideia mistura três objetivos: diminuir a velocidade, parar antes do perigo e 
 - **Segurança:** para antes do cruzamento e libera sozinha quando o perigo passa.
 - **Fiscalização:** para e trava até uma pessoa autorizada liberar (quem? quanto tempo o piloto espera? onde?).
 
+## Decisão do time (3ª rodada): segurança + fiscalização + alerta à polícia
+A pessoa que desbloqueia passa a ser o **policial**. O fluxo só fica coerente com uma **regra que separa os dois caminhos**:
+
+```
+GPS detecta zona de risco → scooter desacelera e para antes do cruzamento
+        ├── piloto estava dentro da regra → libera sozinha quando o perigo passa   (SEGURANÇA)
+        └── piloto quebrou a regra [QUAL?] → roda traseira trava + alerta à polícia → policial desbloqueia   (FISCALIZAÇÃO)
+```
+
+Em aberto:
+- Qual regra manda para a fiscalização? (ex.: velocidade acima do limite na zona)
+- A polícia consegue ir até cada scooter travada? Ou o alerta vira um registro ou uma multa?
+- Enquanto espera o policial, onde fica a scooter? (fora da ciclofaixa?)
+
+## Prompt de imagem (versão final com dois caminhos)
+> Ilustração educativa em estilo de diagrama técnico de um **sistema de segurança e fiscalização para scooters elétricas em ciclofaixas**. A scooter tem GPS e conhece as zonas de risco da cidade. Ao se aproximar de um cruzamento com faixa de pedestres perto de uma escola, a scooter desacelera aos poucos e para antes da faixa. O diagrama se divide em dois caminhos: à esquerda, com um sinal verde, a scooter estava na velocidade permitida e volta a andar sozinha depois que as crianças atravessam. À direita, com um sinal vermelho, a scooter estava acima do limite: a roda traseira trava, um alerta é enviado por celular para uma viatura de polícia, e o policial desbloqueia a scooter. Setas numeradas, fundo branco, cores claras, legendas em português, ambiente urbano.
+
 ## Pontos fracos (os jurados vão perguntar)
 | Ponto | Resposta atual do time | Problema |
 |-------|------------------------|----------|
