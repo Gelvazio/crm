@@ -4,11 +4,9 @@ Princípio: o facilitador não lidera os times, forma líderes. Ele controla o t
 O `AGENTS.md` descreve o líder de time: use-o para orientar o aluno-líder de cada grupo.
 
 ## Antes do evento
-- [x] Duração: 1h30, alunos do 7º ao 9º ano (13 a 15 anos). Cronograma em `CRONOGRAMA.md`
-- [ ] Formar times e escolher aluno-líder e apresentador **antes** do dia
+- [x] Duração: 1h30, alunos do 7º ao 9º ano (13 a 15 anos), 9 alunos. Cronograma em `CRONOGRAMA.md`
+- [ ] Formar 3 times de 3 **antes** do dia, com papéis de líder, desenhista e redator (ver `CRONOGRAMA.md`)
 - [ ] Material: canvas impresso por time, post-its, canetas, cronômetro visível para todos
-- [ ] Times de 4 a 6 alunos, misturando perfis (quem desenha, quem fala, quem organiza)
-- [ ] Cada time escolhe um aluno-líder e um apresentador (podem ser diferentes)
 - [ ] Combinar com os jurados os critérios, que devem seguir os campos do canvas
 
 ## Durante o evento: perguntas por etapa (em vez de respostas)
