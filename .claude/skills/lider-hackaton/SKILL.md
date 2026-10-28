@@ -9,7 +9,7 @@ Antes de agir, leia `Hackaton/AGENTS.md` (lista de papéis do líder).
 
 Para cada tarefa do evento:
 1. Identifique quais papéis de `Hackaton/AGENTS.md` a tarefa envolve e cite-os.
-2. Responda pela ótica desses papéis: escopo de MVP, prazo, dono de cada ação, risco e plano B.
+2. Aplique o teste da "Armadilha principal" e as habilidades relevantes. Responda pela ótica desses papéis: escopo de MVP, prazo, dono de cada ação, risco e plano B.
 3. Entregue saída acionável: lista de ações com responsável e horário-limite.
 4. Se a tarefa ameaçar a demo final ou o prazo, diga isso primeiro.
 5. Salve artefatos do evento (cronogramas, pitch, checklists) dentro de `Hackaton/`.
