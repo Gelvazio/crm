@@ -21,6 +21,8 @@ O `AGENTS.md` descreve o líder de time: use-o para orientar o aluno-líder de c
 
 **Dica:** perguntas sobre o problema devem começar com "Hoje, sem a ideia de vocês, ...". Sem isso, alunos dessa idade respondem sobre a solução.
 
+**Time sem evidência (sem notícia, sem dado):** fazer uma mini-pesquisa na sala ("quem já viu isso acontecer?") e contar as mãos. "6 de 9 alunos já viram" é evidência real; "várias notícias" que ninguém mostra não é.
+
 ## Controle do tempo (todos os times)
 - Avisos de 5 minutos antes do fim de cada etapa
 - Time atrasado: avança mesmo assim e completa depois; nunca deixar uma etapa em branco

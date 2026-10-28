@@ -43,6 +43,14 @@ Coerente com a solução (zona de cruzamento perto de escola, crianças atravess
 - Marcar no canvas: **Crianças** e **Jovens** + "Outro: pedestres e ciclistas"
 - Pergunta para o time: "Nas notícias, quem estava envolvido no acidente?"
 
+## Evidência (5ª rodada)
+O time disse antes "várias notícias de acidentes"; agora diz que **não existe notícia**. A frase "várias notícias" sai do pitch.
+"Como sabemos que é um problema?" passa a ser respondido com:
+1. **Mini-pesquisa na sala** (1 min, na etapa 1): "Quem já viu uma scooter ou bicicleta elétrica rápida demais perto de pedestres?" → contar as mãos: "X de 9 alunos já viram".
+2. **Observação própria:** onde e quando o time viu isso acontecer em Rio do Sul.
+3. **Enquadramento de prevenção no pitch:** "Ainda não tem notícia de acidente aqui, e a nossa ideia é para que continue assim."
+Pergunta de controle: "Existe ciclofaixa perto de alguma escola em Rio do Sul?" Se não existir, o lugar da ideia muda.
+
 ## Pontos fracos (os jurados vão perguntar)
 | Ponto | Resposta atual do time | Problema |
 |-------|------------------------|----------|
