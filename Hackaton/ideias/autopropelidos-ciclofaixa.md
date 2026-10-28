@@ -1,7 +1,7 @@
 # Ideia completa: segurança e fiscalização de autopropelidos em zonas escolares
 
 **Desafio:** Como podemos melhorar nossa cidade? (Rio do Sul, SC)
-**Nome da solução:** [A DEFINIR pelo time]
+**Nome da solução:** Autotec (subtítulo sugerido para o time completar: "Autotec: [o que faz] perto das escolas")
 
 ## 1. Entenda o problema
 - **Qual é o problema?** Autopropelidos (scooters e bicicletas elétricas) andam rápido demais em ciclofaixas perto de escolas e cruzamentos, colocando em risco quem atravessa.
@@ -40,7 +40,7 @@ GPS detecta zona de risco (perto da escola)
 
 ## Pendências (resolver antes do pitch)
 1. Evidência: mini-pesquisa no dia ou contagem em frente à escola
-2. Nome da solução ("Autopeças" é quem instala, não o nome)
+2. ~~Nome da solução~~ → Autotec (falta o subtítulo)
 3. Regra que manda para a fiscalização (ex.: acima do limite na zona)
 4. Existe ciclofaixa perto de escola em Rio do Sul? Se não, o local muda.
 5. Frase final para os jurados
