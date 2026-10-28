@@ -37,6 +37,12 @@ Em aberto:
 ## Prompt de imagem (versão final com dois caminhos)
 > Ilustração educativa em estilo de diagrama técnico de um **sistema de segurança e fiscalização para scooters elétricas em ciclofaixas**. A scooter tem GPS e conhece as zonas de risco da cidade. Ao se aproximar de um cruzamento com faixa de pedestres perto de uma escola, a scooter desacelera aos poucos e para antes da faixa. O diagrama se divide em dois caminhos: à esquerda, com um sinal verde, a scooter estava na velocidade permitida e volta a andar sozinha depois que as crianças atravessam. À direita, com um sinal vermelho, a scooter estava acima do limite: a roda traseira trava, um alerta é enviado por celular para uma viatura de polícia, e o policial desbloqueia a scooter. Setas numeradas, fundo branco, cores claras, legendas em português, ambiente urbano.
 
+## Quem é afetado (4ª rodada)
+Resposta do time: "a população de Rio do Sul". É o "toda a cidade" do canvas: vago demais.
+Coerente com a solução (zona de cruzamento perto de escola, crianças atravessando no desenho):
+- Marcar no canvas: **Crianças** e **Jovens** + "Outro: pedestres e ciclistas"
+- Pergunta para o time: "Nas notícias, quem estava envolvido no acidente?"
+
 ## Pontos fracos (os jurados vão perguntar)
 | Ponto | Resposta atual do time | Problema |
 |-------|------------------------|----------|
