@@ -66,6 +66,10 @@
       .dica { background: #fdf2fb; color: #1f2937; }
       .botao { color: #ffffff; background: #0a4f8f; border-color: #0a4f8f; }
       .botao--secundario { color: #0a4f8f; background: #ffffff; }
+      .abas { display: flex; flex-wrap: wrap; gap: 8px; }
+      .aba[aria-selected="true"] { color: #ffffff; background: #0a4f8f; }
+      .aba-painel[hidden] { display: none; }
+      @media print { .aba-painel[hidden] { display: block; } .abas { display: none; } }
     </style>
   </head>
   <body>
@@ -75,7 +79,12 @@
         <h1>PLANO DE ENSINO — Situação de Aprendizagem</h1>
         <div class="documento__acoes">
           <button class="botao" id="botao-pdf" type="button">📥 Exportar PDF</button>
-          <a class="botao botao--secundario botao--link" href="#aula-guiada">AULA GUIADA</a>
+          <div class="abas" role="tablist" aria-label="Prática por aula">
+            <button class="botao botao--secundario aba" type="button" role="tab" id="aba-aula-03" aria-controls="painel-aula-03" aria-selected="true">PRATICA AULA 03</button>
+            <button class="botao botao--secundario aba" type="button" role="tab" id="aba-aula-04" aria-controls="painel-aula-04" aria-selected="false">PRATICA AULA 04</button>
+            <button class="botao botao--secundario aba" type="button" role="tab" id="aba-aula-05" aria-controls="painel-aula-05" aria-selected="false">PRATICA AULA 05</button>
+            <button class="botao botao--secundario aba" type="button" role="tab" id="aba-aula-06" aria-controls="painel-aula-06" aria-selected="false">PRATICA AULA 06</button>
+          </div>
         </div>
       </div>
 
@@ -147,7 +156,7 @@
         </p>
         <p>
           O docente faz o teste <strong>junto com a turma, em sala</strong>, passo a passo (veja a
-          "Aula guiada" no fim desta página): cada grupo de testes é escrito no quadro, digitado por
+          aba "PRATICA AULA 03" no fim desta página): cada grupo de testes é escrito no quadro, digitado por
           todos, executado e lido em voz alta antes de seguir.
         </p>
         <p>Regras do projeto: <strong>use apenas funções normais (<code>function</code>), sem arrow functions, e <code>{ }</code> em todo <code>if</code></strong>; <strong>não use <code>async</code>/<code>await</code></strong> — encadeie as promessas com <code>.then()</code> e devolva-as com <code>return</code>. A API chega por parâmetro (injeção de dependência), por isso o teste pode trocá-la por uma API falsa ou por um mock.</p>
@@ -258,7 +267,8 @@
         </ul>
       </section>
 
-      <h2 class="aula-guiada__titulo" id="aula-guiada">AULA GUIADA — testando condicao-pagamento.js</h2>
+      <section class="aba-painel" role="tabpanel" id="painel-aula-03" aria-labelledby="aba-aula-03">
+      <h2 class="aula-guiada__titulo" id="aula-guiada">PRATICA AULA 03 — testando condicao-pagamento.js</h2>
       <p>Roteiro curto para o docente fazer com a turma, em sala, o arquivo
       <code>src/condicao-pagamento.test.js</code>. Os trechos vêm do arquivo
       <code>src/condicao-pagamento.exemplo.test.js</code>, que roda e está sempre passando.</p>
@@ -374,6 +384,558 @@ describe('cadastrarCondicao com mock da API', function () {
           <li>☐ Dinâmica "mutante sobrevivente": troque <code>&lt; 1</code> por <code>&lt;= 1</code> no código; algum teste deve falhar (se não falhar, escreva o que faltou) e depois desfaça.</li>
           <li>☐ Print do terminal com os testes passando.</li>
         </ul>
+      </section>
+      </section>
+
+      <section class="aba-painel" role="tabpanel" id="painel-aula-04" aria-labelledby="aba-aula-04" hidden>
+        <h2 class="aula-guiada__titulo">PRATICA AULA 04 — Testes de integração com Testing Library</h2>
+        <p>Aplicação da aula 04 no exemplo <code>src/AULA-04.js</code> (um formulário de cadastro) e no
+        arquivo de testes <code>src/AULA-04.test.js</code>. Aqui o teste é de <strong>integração</strong>:
+        ele monta o formulário num DOM simulado (JSDOM), digita e clica como o usuário e confere só o
+        que aparece na tela (caixa preta, 3.1). Capacidades trabalhadas: C4 e C5; conhecimentos 2.3
+        (aplicação), 3.1 (teste funcional) e 4.1 (funcionalidade).</p>
+        <p class="dica">Estas aulas (04 a 06) usam <code>async</code>/<code>await</code>, porque toda ação do
+        <code>userEvent</code> é assíncrona. A regra "sem async/await" vale só para a prática da aula 03.</p>
+
+        <section class="passo">
+          <h2><span class="passo__n">1</span> O que o formulário faz (o código sob teste)</h2>
+          <p>O formulário tem Nome, E-mail e Senha. O botão <strong>Cadastrar</strong> começa desabilitado
+          e só habilita com nome preenchido, e-mail com <code>@</code> e senha de pelo menos 6 caracteres.
+          Com senha curta, aparece o aviso "A senha deve ter no mínimo 6 dígitos". Esta é a regra que os
+          testes vão provar:</p>
+          <pre data-origem="src/AULA-04.js" data-linhas="40-48"><code>  function atualizar() {
+    const senhaCurta = campoSenha.value.length &gt; 0 &amp;&amp; campoSenha.value.length &lt; TAMANHO_MINIMO_SENHA;
+    aviso.hidden = !senhaCurta;
+    aviso.textContent = senhaCurta ? MSG_SENHA_CURTA : '';
+
+    const senhaValida = campoSenha.value.length &gt;= TAMANHO_MINIMO_SENHA;
+    const estaCompleto = campoNome.value.trim() !== '' &amp;&amp; campoEmail.value.includes('@');
+    botao.disabled = !(estaCompleto &amp;&amp; senhaValida);
+  }</code></pre>
+          <p>O teste <strong>não lê</strong> essas variáveis: ele só olha o resultado na tela. Por isso, se
+          você trocar o nome de uma variável ou de uma classe CSS, os testes continuam passando.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">2</span> Importar as ferramentas</h2>
+          <pre data-origem="src/AULA-04.test.js" data-linhas="1-5"><code>import { describe, it, expect, vi, beforeEach } from 'vitest';
+import '@testing-library/jest-dom/vitest';
+import { screen } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
+import { criarFormularioCadastro, MSG_SENHA_CURTA, MSG_SUCESSO } from './AULA-04.js';</code></pre>
+          <ul>
+            <li><code>describe</code>, <code>it</code>, <code>expect</code>, <code>vi</code> e <code>beforeEach</code>:
+            agrupar, descrever o caso, conferir, criar função falsa e preparar antes de cada teste.</li>
+            <li><code>@testing-library/jest-dom/vitest</code>: ensina o <code>expect</code> os matchers do DOM
+            (<code>toBeDisabled</code>, <code>toBeVisible</code>, <code>toBeInTheDocument</code>…). Como o
+            <code>vite.config.js</code> deste projeto não tem <code>setupFiles</code>, o import fica no próprio
+            arquivo.</li>
+            <li><code>screen</code>: o "olho do usuário", que procura elementos na página.</li>
+            <li><code>userEvent</code>: o "dedo do usuário", que digita e clica de verdade.</li>
+          </ul>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">3</span> Arrange: montar o formulário antes de cada teste</h2>
+          <pre data-origem="src/AULA-04.test.js" data-linhas="7-16"><code>describe('formulário de cadastro (aula 04)', () =&gt; {
+  let aoCadastrar;
+  let usuario;
+
+  beforeEach(() =&gt; {
+    document.body.innerHTML = '';
+    aoCadastrar = vi.fn();
+    usuario = userEvent.setup();
+    document.body.append(criarFormularioCadastro({ aoCadastrar }));
+  });</code></pre>
+          <ul>
+            <li><code>document.body.innerHTML = ''</code> limpa a página: um teste nunca enxerga o resto do outro.</li>
+            <li><code>vi.fn()</code> cria o <code>aoCadastrar</code> falso, só para saber se (e com quais dados) o formulário o chamou.</li>
+            <li><code>userEvent.setup()</code> cria o "usuário" que dispara foco, teclado e clique na ordem real.</li>
+            <li><code>document.body.append(...)</code> coloca o formulário na página, como o navegador faria.</li>
+          </ul>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">4</span> Act e Assert: caso do plano → teste (senha de 5 caracteres)</h2>
+          <pre data-origem="src/AULA-04.test.js" data-linhas="23-30"><code>  it('mostra o aviso e mantém o botão desabilitado com senha de 5 caracteres', async () =&gt; {
+    await usuario.type(screen.getByLabelText('Nome'), 'Ana');
+    await usuario.type(screen.getByLabelText('E-mail'), 'ana@email.com');
+    await usuario.type(screen.getByLabelText('Senha'), '12345');
+
+    expect(screen.getByText(MSG_SENHA_CURTA)).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Cadastrar' })).toBeDisabled();
+  });</code></pre>
+          <table>
+            <tr><th>Caso de teste (plano)</th><th>No teste</th></tr>
+            <tr><td>Pré-condição: formulário aberto</td><td>Arrange: o <code>beforeEach</code> do passo 3</td></tr>
+            <tr><td>Passo: digitar nome, e-mail e senha "12345"</td><td>Act: três <code>await usuario.type(screen.getByLabelText(...), ...)</code></td></tr>
+            <tr><td>Esperado: aviso visível e botão desabilitado</td><td>Assert: <code>toBeVisible()</code> e <code>toBeDisabled()</code></td></tr>
+          </table>
+          <p>Cada campo é achado pelo <strong>rótulo</strong> (<code>getByLabelText</code>) e o botão pelo
+          <strong>papel e nome</strong> (<code>getByRole('button', { name: 'Cadastrar' })</code>): é a ordem de
+          prioridade da aula. Se o teste não achasse o campo pelo rótulo, o leitor de tela também não acharia.
+          O <code>await</code> é obrigatório: sem ele o teste confere antes de a digitação terminar.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">5</span> Corrigir a senha: o aviso some e o botão habilita</h2>
+          <pre data-origem="src/AULA-04.test.js" data-linhas="32-43"><code>  it('habilita o botão e some com o aviso ao corrigir a senha', async () =&gt; {
+    await usuario.type(screen.getByLabelText('Nome'), 'Ana');
+    await usuario.type(screen.getByLabelText('E-mail'), 'ana@email.com');
+    const campoSenha = screen.getByLabelText('Senha');
+
+    await usuario.type(campoSenha, '123');
+    expect(screen.getByText(MSG_SENHA_CURTA)).toBeInTheDocument();
+
+    await usuario.type(campoSenha, '456');
+    expect(screen.queryByText(MSG_SENHA_CURTA)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cadastrar' })).toBeEnabled();
+  });</code></pre>
+          <p><code>queryByText</code> devolve <code>null</code> quando não acha, por isso serve para provar que
+          algo <strong>não está</strong> na tela (<code>not.toBeInTheDocument()</code>). Já <code>getByText</code>
+          falharia o teste ao não achar. O mesmo campo recebe "123" e depois "456" (total 123456), simulando o
+          usuário que percebe o aviso e continua digitando.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">6</span> O fluxo perfeito: preencher e enviar</h2>
+          <pre data-origem="src/AULA-04.test.js" data-linhas="45-58"><code>  it('fluxo perfeito: preenche, envia e mostra a confirmação', async () =&gt; {
+    await usuario.type(screen.getByLabelText('Nome'), 'Ana');
+    await usuario.type(screen.getByLabelText('E-mail'), 'ana@email.com');
+    await usuario.type(screen.getByLabelText('Senha'), '123456');
+
+    await usuario.click(screen.getByRole('button', { name: 'Cadastrar' }));
+
+    expect(aoCadastrar).toHaveBeenCalledWith({
+      nome: 'Ana',
+      email: 'ana@email.com',
+      senha: '123456',
+    });
+    expect(screen.getByRole('status')).toHaveTextContent(MSG_SUCESSO);
+  });</code></pre>
+          <p>Aqui o teste percorre o caminho completo do usuário. <code>toHaveBeenCalledWith</code> prova que o
+          formulário entregou ao callback exatamente os dados digitados, e <code>getByRole('status')</code>
+          confere a mensagem de sucesso. Um único teste cobre digitação, validação, envio e resposta: por isso
+          é de <em>integração</em>, e não unitário.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">7</span> Rodar, conferir e provar que o teste protege</h2>
+          <pre><code>npx vitest run src/AULA-04.test.js</code></pre>
+          <ul class="checklist">
+            <li>☐ 4 testes com ✓ e nomes que descrevem o comportamento.</li>
+            <li>☐ Mutante: em <code>src/AULA-04.js</code>, troque <code>TAMANHO_MINIMO_SENHA</code> de 6 para 5. O teste da senha de 5 caracteres deve falhar (a senha passaria a ser válida e o aviso não apareceria). Depois desfaça.</li>
+            <li>☐ Verificação: por que usar <code>queryByText</code> e não <code>getByText</code> para conferir que o aviso sumiu?</li>
+          </ul>
+        </section>
+      </section>
+
+      <section class="aba-painel" role="tabpanel" id="painel-aula-05" aria-labelledby="aba-aula-05" hidden>
+        <h2 class="aula-guiada__titulo">PRATICA AULA 05 — Integração avançada e mock de APIs</h2>
+        <p>Aplicação da aula 05 no exemplo <code>src/AULA-05.js</code> (tela de login e carrinho) e nos
+        testes <code>src/AULA-05.test.js</code>. O objetivo é o teste <strong>não depender da API real</strong>:
+        a resposta do servidor é simulada e o teste controla exatamente o que ela devolve, inclusive os erros
+        500 e 404 e a rede lenta (confiabilidade, 4.3). Capacidade trabalhada: C5; conhecimentos 2.3, 4.3 e 7.3.</p>
+        <p class="dica">A aula apresenta o MSW, mas ele não está instalado neste projeto. Usamos a opção
+        listada na própria aula para casos simples: <code>vi.spyOn(globalThis, 'fetch')</code>, que troca o
+        <code>fetch</code> global por uma função controlada pelo teste. O código da tela não muda nada.</p>
+
+        <section class="passo">
+          <h2><span class="passo__n">1</span> O código sob teste: cada resposta vira uma mensagem</h2>
+          <pre data-origem="src/AULA-05.js" data-linhas="35-45"><code>async function interpretarResposta(resposta) {
+  if (resposta.status &gt;= STATUS_ERRO_SERVIDOR) return MSG_SERVICO_INDISPONIVEL;
+  if (resposta.status === STATUS_NAO_ENCONTRADO) return MSG_NAO_ENCONTRADO;
+
+  const dados = await resposta.json();
+  if (resposta.status === STATUS_NAO_AUTORIZADO) return dados.erro;
+  if (!resposta.ok) return MSG_SERVICO_INDISPONIVEL;
+
+  localStorage.setItem(CHAVE_TOKEN, dados.token);
+  return `Bem-vindo, ${dados.nome}`;
+}</code></pre>
+          <p>Repare em duas decisões de confiabilidade: o erro 500 devolve a mensagem <strong>sem chamar
+          <code>resposta.json()</code></strong> (servidor fora do ar costuma responder sem corpo, e o
+          <code>json()</code> lançaria um erro), e a tela usa <code>try/catch/finally</code> para tratar a rede
+          caída e sempre reativar o botão. Os testes abaixo existem para provar essas duas decisões.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">2</span> Resposta falsa e atalho do login</h2>
+          <pre data-origem="src/AULA-05.test.js" data-linhas="20-45"><code>/**
+ * Cria uma resposta no formato mínimo de Response usado pela tela.
+ * @param {number} status - Código HTTP.
+ * @param {object} [corpo] - Corpo JSON; sem corpo, json() rejeita.
+ * @returns {{ok: boolean, status: number, json: Function}} Resposta simulada.
+ */
+function responder(status, corpo) {
+  return {
+    ok: status &gt;= 200 &amp;&amp; status &lt; 300,
+    status,
+    json: () =&gt; (corpo === undefined ? Promise.reject(new Error('vazio')) : Promise.resolve(corpo)),
+  };
+}
+
+/**
+ * Preenche o formulário de login e clica em Entrar.
+ * @param {string} email - E-mail digitado.
+ * @param {string} senha - Senha digitada.
+ * @returns {Promise&lt;void&gt;} Conclui após o clique.
+ */
+async function entrarCom(email, senha) {
+  const usuario = userEvent.setup();
+  await usuario.type(screen.getByLabelText('E-mail'), email);
+  await usuario.type(screen.getByLabelText('Senha'), senha);
+  await usuario.click(screen.getByRole('button', { name: 'Entrar' }));
+}</code></pre>
+          <ul>
+            <li><code>responder(status, corpo)</code> monta só o pedaço da <code>Response</code> que a tela usa
+            (<code>ok</code>, <code>status</code> e <code>json</code>). Sem <code>corpo</code>, o <code>json()</code>
+            rejeita, como num erro 500 real sem corpo.</li>
+            <li><code>entrarCom(email, senha)</code> evita repetir o Act em todo teste: digita, digita e clica.</li>
+          </ul>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">3</span> Isolamento: nada vaza de um teste para o outro</h2>
+          <pre data-origem="src/AULA-05.test.js" data-linhas="47-57"><code>describe('fluxo de login', () =&gt; {
+  beforeEach(() =&gt; {
+    document.body.innerHTML = '';
+    localStorage.clear();
+    montarTelaLogin(document.body);
+  });
+
+  afterEach(() =&gt; {
+    localStorage.clear();
+    vi.restoreAllMocks();
+  });</code></pre>
+          <p>Antes de cada teste a página e o <code>localStorage</code> são limpos e a tela é montada de novo.
+          Depois, <code>vi.restoreAllMocks()</code> devolve o <code>fetch</code> verdadeiro (é o papel que o
+          <code>resetHandlers()</code> teria com o MSW). Sem isso, a resposta falsa de um teste vazaria para o
+          seguinte e o resultado dependeria da ordem de execução.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">4</span> Sucesso: provar a resposta e também a requisição</h2>
+          <pre data-origem="src/AULA-05.test.js" data-linhas="59-72"><code>  it('sucesso: envia as credenciais, guarda o token e dá boas-vindas', async () =&gt; {
+    const espiao = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(responder(200, { token: 'abc123', nome: 'Aluno' }));
+
+    await entrarCom('aluno@email.com', 'senha123');
+
+    expect(await screen.findByText('Bem-vindo, Aluno')).toBeVisible();
+    expect(localStorage.getItem(CHAVE_TOKEN)).toBe('abc123');
+    const [url, opcoes] = espiao.mock.calls[0];
+    expect(url).toBe(`${URL_API}/login`);
+    expect(opcoes.method).toBe('POST');
+    expect(JSON.parse(opcoes.body)).toEqual({ email: 'aluno@email.com', senha: 'senha123' });
+  });</code></pre>
+          <ul>
+            <li><code>mockResolvedValue</code> define o que o <code>fetch</code> falso devolve.</li>
+            <li><code>findByText</code> <strong>espera</strong> a mensagem aparecer (o login é assíncrono). Nunca
+            use <code>setTimeout</code> fixo: deixa o teste lento quando sobra e instável (flaky) quando falta.</li>
+            <li><code>espiao.mock.calls[0]</code> guarda como o <code>fetch</code> foi chamado: prova a URL, o
+            método POST e o corpo JSON enviado. O mock também serve para auditar a requisição.</li>
+          </ul>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">5</span> Confiabilidade: 401, 500 e 404</h2>
+          <pre data-origem="src/AULA-05.test.js" data-linhas="74-100"><code>  it('senha errada: mostra o erro da API e não guarda token', async () =&gt; {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      responder(401, { erro: 'Credenciais inválidas' }),
+    );
+
+    await entrarCom('aluno@email.com', 'errada');
+
+    expect(await screen.findByText('Credenciais inválidas')).toBeVisible();
+    expect(localStorage.getItem(CHAVE_TOKEN)).toBeNull();
+  });
+
+  it('erro 500: mostra serviço indisponível e reativa o botão', async () =&gt; {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(responder(500));
+
+    await entrarCom('aluno@email.com', 'senha123');
+
+    expect(await screen.findByText(MSG_SERVICO_INDISPONIVEL)).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Entrar' })).toBeEnabled();
+  });
+
+  it('erro 404: mostra recurso não encontrado', async () =&gt; {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(responder(404));
+
+    await entrarCom('aluno@email.com', 'senha123');
+
+    expect(await screen.findByText(MSG_NAO_ENCONTRADO)).toBeVisible();
+  });</code></pre>
+          <table>
+            <tr><th>Cenário</th><th>O que a tela deve fazer</th><th>Como o teste prova</th></tr>
+            <tr><td>401 senha errada</td><td>Mostrar o erro da API, sem guardar token</td><td><code>findByText</code> + <code>getItem(...)</code> <code>toBeNull()</code></td></tr>
+            <tr><td>500 sem corpo</td><td>"Serviço indisponível" e botão reativado</td><td><code>toBeEnabled()</code></td></tr>
+            <tr><td>404</td><td>Mensagem amigável, sem quebrar a página</td><td><code>findByText(MSG_NAO_ENCONTRADO)</code></td></tr>
+          </table>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">6</span> Rede lenta e rede caída</h2>
+          <pre data-origem="src/AULA-05.test.js" data-linhas="102-125"><code>  it('rede lenta: mostra Carregando e depois o resultado', async () =&gt; {
+    let liberarResposta;
+    vi.spyOn(globalThis, 'fetch').mockReturnValue(
+      new Promise((resolver) =&gt; {
+        liberarResposta = resolver;
+      }),
+    );
+
+    await entrarCom('aluno@email.com', 'senha123');
+    expect(await screen.findByText(MSG_CARREGANDO)).toBeVisible();
+    liberarResposta(responder(200, { token: 'abc123', nome: 'Aluno' }));
+
+    expect(await screen.findByText('Bem-vindo, Aluno')).toBeVisible();
+    await waitFor(() =&gt; expect(screen.queryByText(MSG_CARREGANDO)).not.toBeInTheDocument());
+  });
+
+  it('rede caída: mostra sem conexão', async () =&gt; {
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('Failed to fetch'));
+
+    await entrarCom('aluno@email.com', 'senha123');
+
+    expect(await screen.findByText(MSG_SEM_CONEXAO)).toBeVisible();
+    expect(localStorage.getItem(CHAVE_TOKEN)).toBeNull();
+  });</code></pre>
+          <p>Na rede lenta, a promessa do <code>fetch</code> fica <strong>pendente</strong> até o próprio teste
+          chamar <code>liberarResposta(...)</code>. Assim dá para conferir o "Carregando..." no meio do caminho e
+          depois o resultado, sem relógio nenhum. <code>waitFor</code> fecha provando que o aviso de carregamento
+          foi retirado. Na rede caída, <code>mockRejectedValue(new TypeError(...))</code> faz o <code>fetch</code>
+          rejeitar, como acontece sem internet, e a tela deve cair no <code>catch</code>.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">7</span> Carrinho no localStorage</h2>
+          <pre data-origem="src/AULA-05.test.js" data-linhas="142-171"><code>  it('adiciona um item e persiste no localStorage', () =&gt; {
+    const item = { id: 1, nome: 'Caneta', preco: 3.5 };
+
+    const carrinho = adicionarAoCarrinho(item);
+
+    expect(carrinho).toContainEqual(item);
+    expect(JSON.parse(localStorage.getItem(CHAVE_CARRINHO))).toContainEqual(item);
+  });
+
+  it('remove apenas o item informado', () =&gt; {
+    adicionarAoCarrinho({ id: 1, nome: 'Caneta', preco: 3.5 });
+    adicionarAoCarrinho({ id: 2, nome: 'Caderno', preco: 12 });
+
+    removerDoCarrinho(1);
+
+    expect(lerCarrinho()).toEqual([{ id: 2, nome: 'Caderno', preco: 12 }]);
+  });
+
+  it('limpa o carrinho inteiro', () =&gt; {
+    adicionarAoCarrinho({ id: 1, nome: 'Caneta', preco: 3.5 });
+
+    limparCarrinho();
+
+    expect(lerCarrinho()).toEqual([]);
+  });
+
+  it('isolamento: o teste anterior não deixou itens para trás', () =&gt; {
+    expect(lerCarrinho()).toHaveLength(0);
+    expect(localStorage.getItem(CHAVE_CARRINHO)).toBeNull();
+  });</code></pre>
+          <p>O <code>localStorage</code> do JSDOM funciona como o do navegador. O último teste prova o
+          isolamento: se o <code>beforeEach</code>/<code>afterEach</code> não limpassem, ele encontraria itens
+          deixados pelos anteriores e falharia.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">8</span> Executar (7.3) e provar que o teste protege</h2>
+          <pre><code>npx vitest run src/AULA-05.test.js</code></pre>
+          <ul class="checklist">
+            <li>☐ 11 testes com ✓. Rode a suíte 3 vezes: se o resultado mudar sem mudar o código, há teste instável.</li>
+            <li>☐ Mutante: em <code>src/AULA-05.js</code>, apague a linha que trata <code>STATUS_ERRO_SERVIDOR</code>. O teste do erro 500 deve falhar, porque a tela tentaria ler um corpo que não existe. Depois desfaça.</li>
+            <li>☐ Verificação: o mock pode esconder um defeito? (Sim: se a API real mudar o formato da resposta, o teste continua passando. Por isso ainda existe o E2E, da aula 06.)</li>
+          </ul>
+        </section>
+      </section>
+
+      <section class="aba-painel" role="tabpanel" id="painel-aula-06" aria-labelledby="aba-aula-06" hidden>
+        <h2 class="aula-guiada__titulo">PRATICA AULA 06 — Testes end-to-end (fluxo completo)</h2>
+        <p>Aplicação da aula 06 no exemplo <code>src/AULA-06.js</code> (uma mini-loja com login, painel, carrinho,
+        checkout e confirmação) e nos testes <code>src/AULA-06.test.js</code>. O E2E percorre o <strong>caminho
+        completo do usuário</strong> e confere o resultado de cada etapa. Capacidades: C4 e C5; conhecimentos 2.2,
+        2.3, 3.1 e 4.2 (usabilidade).</p>
+        <p class="dica">Cypress e Playwright não estão instalados e este projeto não abre navegador para validar.
+        Por isso o fluxo é <strong>simulado em JSDOM</strong> com Vitest e Testing Library. A lógica é a da aula:
+        passos de usuário e uma verificação depois de cada etapa. Trocar por Playwright muda só a ferramenta
+        (veja o passo 6).</p>
+
+        <section class="passo">
+          <h2><span class="passo__n">1</span> O que a loja faz (o código sob teste)</h2>
+          <table>
+            <tr><th>Página</th><th>O que o usuário vê e faz</th></tr>
+            <tr><td>login</td><td>E-mail, senha e botão Entrar; credencial errada mostra um alerta</td></tr>
+            <tr><td>painel</td><td>"Bem-vindo, Aluno", produto Caderno (R$ 20), Adicionar ao carrinho e contador de itens</td></tr>
+            <tr><td>carrinho</td><td>Quantidade e "Subtotal: R$ ..." recalculado a cada alteração</td></tr>
+            <tr><td>checkout</td><td>Endereço e cartão de teste (16 dígitos); Confirmar só habilita com os dois válidos</td></tr>
+            <tr><td>confirmacao</td><td>"Pedido confirmado: #1001" (o número sobe a cada pedido)</td></tr>
+          </table>
+          <p>A função <code>montarLoja(container)</code> controla a troca de página sozinha e marca a página atual
+          no atributo <code>data-pagina</code>, mas o teste <strong>não usa</strong> esse atributo: ele só olha títulos,
+          rótulos e botões, como um usuário (caixa preta, 3.1).</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">2</span> Arrange: dados isolados e o atalho de login</h2>
+          <pre data-origem="src/AULA-06.test.js" data-linhas="14-37"><code>const ENDERECO_TESTE = 'Rua das Flores, 100';
+const CARTAO_TESTE = '4242424242424242';
+
+describe('fluxo E2E simulado', () =&gt; {
+  let usuario;
+
+  /**
+   * Faz login com credenciais válidas e espera o painel.
+   * @returns {Promise&lt;void&gt;}
+   */
+  async function entrar() {
+    await usuario.type(screen.getByLabelText('E-mail'), EMAIL_VALIDO);
+    await usuario.type(screen.getByLabelText('Senha'), SENHA_VALIDA);
+    await usuario.click(screen.getByRole('button', { name: 'Entrar' }));
+    expect(screen.getByRole('heading', { name: 'Painel' })).toBeInTheDocument();
+  }
+
+  beforeEach(() =&gt; {
+    document.body.innerHTML = '';
+    usuario = userEvent.setup();
+    const container = document.createElement('div');
+    document.body.append(container);
+    montarLoja(container);
+  });</code></pre>
+          <ul>
+            <li>Cada teste monta uma loja <strong>nova</strong> (<code>beforeEach</code>): nenhum teste depende da
+            ordem nem dos dados de outro. É a correção clássica de teste intermitente da aula (dados
+            compartilhados e ordem entre testes).</li>
+            <li><code>entrar()</code> é o login feito dentro do próprio teste, já com uma verificação: o
+            painel precisa aparecer.</li>
+          </ul>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">3</span> Fluxo de login: sucesso e falha</h2>
+          <pre data-origem="src/AULA-06.test.js" data-linhas="39-55"><code>  it('login com sucesso chega ao painel', async () =&gt; {
+    expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument();
+
+    await entrar();
+
+    expect(screen.getByText(/Bem-vindo, Aluno/)).toBeInTheDocument();
+  });
+
+  it('login com senha errada mostra alerta e continua em login', async () =&gt; {
+    await usuario.type(screen.getByLabelText('E-mail'), EMAIL_VALIDO);
+    await usuario.type(screen.getByLabelText('Senha'), 'senha-errada');
+    await usuario.click(screen.getByRole('button', { name: 'Entrar' }));
+
+    expect(screen.getByRole('alert')).toHaveTextContent(MSG_CREDENCIAIS_INVALIDAS);
+    expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Painel' })).not.toBeInTheDocument();
+  });</code></pre>
+          <p>O caso de falha prova três coisas: o alerta aparece com a mensagem, o usuário continua no login e o
+          painel <strong>não</strong> abriu (<code>queryByRole</code> + <code>not.toBeInTheDocument()</code>). Um E2E
+          de falha que só olhasse o alerta deixaria passar uma loja que mostra o erro e entra mesmo assim.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">4</span> Fluxo de checkout: cada etapa tem uma verificação</h2>
+          <pre data-origem="src/AULA-06.test.js" data-linhas="57-84"><code>  it('checkout completo: login, carrinho, checkout e confirmação', async () =&gt; {
+    await entrar();
+
+    await usuario.click(screen.getByRole('button', { name: 'Adicionar ao carrinho' }));
+    expect(screen.getByLabelText('Itens no carrinho')).toHaveTextContent('1');
+
+    await usuario.click(screen.getByRole('button', { name: 'Ver carrinho' }));
+    expect(screen.getByRole('heading', { name: 'Carrinho' })).toBeInTheDocument();
+    expect(screen.getByText(`Subtotal: R$ ${PRODUTO.preco}`)).toBeInTheDocument();
+
+    const campoQuantidade = screen.getByLabelText('Quantidade');
+    await usuario.clear(campoQuantidade);
+    await usuario.type(campoQuantidade, '2');
+    expect(screen.getByText('Subtotal: R$ 40')).toBeInTheDocument();
+
+    await usuario.click(screen.getByRole('button', { name: 'Ir para o checkout' }));
+    expect(screen.getByRole('heading', { name: 'Checkout' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Confirmar' })).toBeDisabled();
+
+    await usuario.type(screen.getByLabelText('Endereço'), ENDERECO_TESTE);
+    await usuario.type(screen.getByLabelText('Cartão de teste'), CARTAO_TESTE);
+    expect(screen.getByRole('button', { name: 'Confirmar' })).toBeEnabled();
+
+    await usuario.click(screen.getByRole('button', { name: 'Confirmar' }));
+    expect(screen.getByRole('status')).toHaveTextContent(
+      new RegExp(`${MSG_SUCESSO_PEDIDO}: #\\d+`),
+    );
+  });</code></pre>
+          <table>
+            <tr><th>Etapa</th><th>Ação no teste</th><th>Verificação</th></tr>
+            <tr><td>Vitrine</td><td>Clicar em Adicionar ao carrinho</td><td>Contador = 1</td></tr>
+            <tr><td>Carrinho</td><td>Alterar a quantidade para 2</td><td>"Subtotal: R$ 40"</td></tr>
+            <tr><td>Checkout</td><td>Preencher endereço e cartão</td><td>Confirmar passa de desabilitado para habilitado</td></tr>
+            <tr><td>Confirmação</td><td>Clicar em Confirmar</td><td>Mensagem de sucesso com o número do pedido</td></tr>
+          </table>
+          <p>Sem as verificações do meio, o teste só diria "algo deu errado em algum lugar". Com elas, a falha
+          aponta a etapa exata. <code>usuario.clear</code> + <code>usuario.type</code> troca a quantidade como o
+          usuário faria, e a expressão regular <code>#\d+</code> aceita qualquer número de pedido.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">5</span> Usabilidade (4.2): rótulos, papéis e teclado</h2>
+          <pre data-origem="src/AULA-06.test.js" data-linhas="86-103"><code>  it('usabilidade 4.2: campos por label e botões por papel', () =&gt; {
+    expect(screen.getByLabelText('E-mail')).toBeInTheDocument();
+    expect(screen.getByLabelText('Senha')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Entrar' })).toBeInTheDocument();
+  });
+
+  it('fluxo de login só com teclado', async () =&gt; {
+    await usuario.tab();
+    expect(screen.getByLabelText('E-mail')).toHaveFocus();
+    await usuario.keyboard(EMAIL_VALIDO);
+
+    await usuario.tab();
+    expect(screen.getByLabelText('Senha')).toHaveFocus();
+    await usuario.keyboard(SENHA_VALIDA);
+    await usuario.keyboard('{Enter}');
+
+    expect(screen.getByRole('heading', { name: 'Painel' })).toBeInTheDocument();
+  });</code></pre>
+          <p>O primeiro teste garante que os campos têm rótulo e os botões têm nome (acessibilidade). O segundo faz
+          o login <strong>só com o teclado</strong>: <code>tab()</code> move o foco, <code>toHaveFocus()</code> prova
+          onde ele está e <code>{Enter}</code> envia o formulário. Se o campo não fosse alcançável por teclado, o
+          teste falharia.</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">6</span> O mesmo login no Playwright (para comparar)</h2>
+          <pre><code>import { test, expect } from '@playwright/test';
+
+test('entra com credenciais válidas e chega ao painel', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByLabel('E-mail').fill('aluno@senai.br');
+  await page.getByLabel('Senha').fill('123456');
+  await page.getByRole('button', { name: 'Entrar' }).click();
+  await expect(page.getByRole('heading', { name: 'Painel' })).toBeVisible();
+});</code></pre>
+          <p>Este trecho é só de comparação e não roda no projeto. Repare que as buscas são as mesmas do
+          Testing Library (<code>getByLabel</code>, <code>getByRole</code>): quem domina as queries da aula 04 já
+          sabe escolher elementos no E2E. A diferença é o ambiente: o Playwright abre um navegador real e
+          acha defeitos que o JSDOM não vê (como um banner cobrindo o botão).</p>
+        </section>
+
+        <section class="passo">
+          <h2><span class="passo__n">7</span> Rodar, caçar o teste instável e provar que protege</h2>
+          <pre><code>npx vitest run src/AULA-06.test.js</code></pre>
+          <ul class="checklist">
+            <li>☐ 5 testes com ✓. Rode a suíte 3 vezes: nenhum resultado pode mudar.</li>
+            <li>☐ Mutante: em <code>src/AULA-06.js</code>, troque o preço do <code>PRODUTO</code> de 20 para 25. A verificação "Subtotal: R$ 40" deve falhar (o subtotal seria 50). Depois desfaça.</li>
+            <li>☐ Verificação: por que a suíte tem poucos testes E2E e muitos unitários? (Eles são mais lentos e quebram por mais motivos; ficam só para os fluxos críticos.)</li>
+          </ul>
+        </section>
       </section>
     </main>
     <script type="module" src="/src/atividade.js"></script>
